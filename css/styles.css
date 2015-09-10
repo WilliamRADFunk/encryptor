@@ -1,0 +1,51 @@
+body
+{
+	width: 100%;
+}
+input,
+select,
+textarea
+{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+}
+select
+{
+	width: 75%;
+}
+label
+{
+	display: block;
+	margin-bottom: 10px;
+	margin-top: 20px;
+	text-align: center;
+}
+legend
+{
+	margin-bottom: 30px;
+	padding-top:20px;
+	text-align: center;
+}
+#btn-submit
+{
+	margin: 10px auto;
+	width: 75px;
+}
+#crypto-box
+{
+	border: 2px solid #000000;
+	margin: 50px auto;
+	width: 25%;
+}
+#output
+{
+	display: none;
+}
+.encryp-opt
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 80%;
+}
