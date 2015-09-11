@@ -8,7 +8,7 @@ body
 input,
 select,
 textarea,
-#check,
+#check
 {
 	display: block;
 	margin-left: auto;
@@ -94,7 +94,8 @@ legend
 	margin-right: auto;
 	width: 80%;
 }
-.underline
+.boxed
 {
-	text-decoration: underline;
+	border-bottom: 1px solid #000000;
+	border-top: 1px solid #000000;
 }

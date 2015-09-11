@@ -11,7 +11,7 @@
 		case "Caesar":
 		{
 			$_SESSION["key"] = rand(1, 93);
-			$cleanText = caesarClean($plaintext);
+			$cleanText = clean($plaintext);
 			require_once("caesar.php");
 			$_SESSION["encryptedText"] = caesarEncrypt($cleanText, $_SESSION["key"]);
 			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
@@ -61,7 +61,7 @@
 ?>
 
 <?php
-	function caesarClean($plaintext)
+	function clean($plaintext)
 	{
 		$cleanText = "";
 		for($i = 0; $i < strlen($plaintext); $i++)
