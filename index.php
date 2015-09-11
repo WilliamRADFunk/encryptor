@@ -13,23 +13,12 @@
 
 <body>
 
-<?php
-
-$title = "title";
-$userDefinedKey = "";
-$cryptoMethod = "";
-$plaintext = "";
-
-?>
-
 <div id="crypto-box">
 	<form action="php/controller.php" method="post">
 	<fieldset>
 		<legend>THE ENCRYPTOR</legend>
 		<p><label for="title">Title of encrypted document (optional):</label></p>
 		<input type="text" name="title">
-		<p><label for="user-defined-key">Your key:</label></p>
-		<input type="text" name="user-defined-key">
 		<p><label for="crypto-method">Encryption Method:</label></p>
 		<select name="crypto-method">
 			<option class="encryp-opt" value="Caesar">Caesar Cipher</option>
@@ -43,6 +32,8 @@ $plaintext = "";
 			<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>
 			<option class="encryp-opt" value="MD5">MD5 Cipher</option>
 		</select>
+		<p><label for="user-defined-key">Your key:</label></p>
+		<input type="text" name="user-defined-key">
 		<p><label for="plaintext">Paste in plaintext to be encrypted:</label></p>
 		<textarea name="plaintext" rows="10" cols="20"></textarea>
 		<input id="btn-submit" type="submit" value="Submit">
