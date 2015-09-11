@@ -1,5 +1,5 @@
 # encryptor
-An application that encrypts and decodes text using any a number of cryptographic algorithms.</br></br>
+An application that encrypts and decodes text using any number of cryptographic algorithms.</br></br>
 
 This application is intended to demonstrate an understanding of the included cryptographic algorithms.</br></br>
 
