@@ -6,7 +6,8 @@ body
 }
 input,
 select,
-textarea
+textarea,
+#check
 {
 	display: block;
 	margin-left: auto;
@@ -31,6 +32,30 @@ legend
 	margin: 10px auto;
 	width: 75px;
 }
+#check
+{
+	margin-bottom: 70px;
+	margin-top: 20px;
+}
+#check input
+{
+	display: block;
+	height: 15px;
+	padding-top: 10px;
+	width: 10%;
+}
+#check input,
+#check label
+{
+	float: left;
+	margin: 0px;
+}
+#check label
+{
+	display: block;
+	text-align: left;
+	width: 90%;
+}
 #crypto-box
 {
 	background-color: #DDDDDD;
@@ -42,6 +67,10 @@ legend
 #output
 {
 	display: none;
+}
+.clearBoth
+{
+	clear: both;
 }
 .encryp-opt
 {

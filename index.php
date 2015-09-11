@@ -31,15 +31,15 @@
 				<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>
 				<option class="encryp-opt" value="MD5">MD5 Cipher</option>
 			</select>
-			<p><label for="title">Email Address (optional):</label></p>
+			<p><label for="contact">Email Address (optional):</label></p>
 			<input type="text" name="contact">
-			<input type="checkbox" name="emailMe"><span>Email me the result</span>
-			<p><label for="plaintext">Paste in plaintext to be encrypted:</label></p>
+			<p id="check"><input type="checkbox" name="emailMe"><label for="emailMe">Email me the result</label></p>
+			<p class="clearBoth"><label for="plaintext">Paste in plaintext to be encrypted:</label></p>
 			<textarea name="plaintext" rows="10" cols="20"></textarea>
 			<input id="btn-submit" type="submit" value="Submit">
 			<p><label id="output" for="encrypted-content">Your encrypted content:</label></p>
 		</fieldset>
-		<output name="encrypted-content" for="title user-defined-key crypto-method plaintext"></output>
+		<output name="encrypted-content" for="contact emailMe crypto-method plaintext"></output>
 	</form>
 </div>
 </body>
