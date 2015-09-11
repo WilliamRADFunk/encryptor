@@ -8,14 +8,22 @@
     <title>Encryptor</title>
     <link rel="stylesheet" href="css/reset_author_richard_clark.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script type="text/javascript" src="js/jquery-1.11.2.js"></script>
-    <script type="text/javascript" src="js/controller.js"></script>
 
 </head>
 
 <body>
+
+<?php
+
+$title = "title";
+$userDefinedKey = "";
+$cryptoMethod = "";
+$plaintext = "";
+
+?>
+
 <div id="crypto-box">
-	<form oninput="">
+	<form action="php/controller.php" method="post">
 	<fieldset>
 		<legend>THE ENCRYPTOR</legend>
 		<p><label for="title">Title of encrypted document (optional):</label></p>
