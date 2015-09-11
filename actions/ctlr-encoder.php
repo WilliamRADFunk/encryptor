@@ -13,7 +13,7 @@
 			$_SESSION["key"] = rand(1, 93);
 			$cleanText = clean($plaintext);
 			require_once("caesar.php");
-			$_SESSION["encryptedText"] = caesarEncrypt($cleanText, $_SESSION["key"]);
+			$_SESSION["result"] = caesarEncrypt($cleanText, $_SESSION["key"]);
 			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
 			break;
 		}

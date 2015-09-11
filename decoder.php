@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" prefix="og: http://ogp.me/ns#">
 
 <head>
-<!-- Background photo: https://www.flickr.com/photos/3_dots/ -->
+<!-- Background photo: https://www.flickr.com/photos/41315642@N04/4686290616/in/faves-59382647@N03/ -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,8 +12,10 @@
 
 </head>
 
-<body>
-
+<body class="decoder">
+<form action="index.php" method="post">
+	<input id="btn-switch" type="submit" value="SWITCH TO ENCODER">
+</form>
 <div id="crypto-box">
 	<form action="actions/ctlr-decoder.php" method="post">
 		<fieldset>

@@ -1,9 +1,17 @@
 body
 {
+	font-family: Arial;
 	width: 100%;
+}
+body.encryptor
+{
 	background: url("../assets/img_background.jpg") center center no-repeat;
 	background-size: contain;
-	font-family: Arial;
+}
+body.decoder
+{
+	background: url("../assets/img_background2.jpg") center center no-repeat;
+	background-size: contain;
 }
 input,
 select,
@@ -24,9 +32,15 @@ label
 }
 legend
 {
-	margin-bottom: 30px;
+	margin-bottom: 0px;
 	padding-top:20px;
 	text-align: center;
+}
+#btn-switch
+{
+	display: block;
+	margin: 20px auto 0px auto;
+	width: 15%;
 }
 #btn-submit
 {
@@ -62,7 +76,7 @@ legend
 {
 	background-color: #DDDDDD;
 	border: 2px solid #000000;
-	margin: 50px auto;
+	margin: 30px auto;
 	opacity: 0.85;
 	width: 25%;
 }

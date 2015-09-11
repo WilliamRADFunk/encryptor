@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" prefix="og: http://ogp.me/ns#">
 
 <head>
-<!-- Background photo: https://www.flickr.com/photos/3_dots/ -->
+<!-- Background photo: http://skeletaljoy.tumblr.com/post/3582812227 -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -18,7 +18,7 @@
 	<h3>TEXT ENCRYPTED</h3>
 	<p class="boxed">Encryption Method Used</p>
 	<p>"<?php echo $_SESSION["cryptoMethod"]; ?>"</p>
-	<p class="boxed">Randomly Generated Key</p>
+	<p class="boxed">Key</p>
 	<p>"<?php echo $_SESSION["key"]; ?>"</p>
 	<?php
 		if($_SESSION["emailMe"])
@@ -27,8 +27,13 @@
 		}
 	?>
 	<p class="clearBoth boxed">Encrypted text</p>
-	<textarea name="encryptedtext" rows="10" cols="20"><?php echo $_SESSION["encryptedText"]; ?></textarea>
+	<textarea rows="10" cols="20"><?php echo $_SESSION["result"]; ?></textarea>
 </div>
+
+<?php
+	session_unset();
+	session_destroy();
+?>
 
 </body>
 </html>

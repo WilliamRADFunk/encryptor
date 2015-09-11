@@ -12,8 +12,10 @@
 
 </head>
 
-<body>
-
+<body class="encryptor">
+<form action="decoder.php" method="post">
+	<input id="btn-switch" type="submit" value="SWITCH TO DECODER">
+</form>
 <div id="crypto-box">
 	<form action="actions/ctlr-encoder.php" method="post">
 		<fieldset>
@@ -36,7 +38,7 @@
 			<p id="check"><input type="checkbox" name="emailMe"><label for="emailMe">Email me the result</label></p>
 			<p class="clearBoth"><label for="plaintext">Paste in plaintext to be encrypted:</label></p>
 			<textarea name="plaintext" rows="10" cols="20"></textarea>
-			<input id="btn-submit" type="submit" value="Submit">
+			<input id="btn-submit" type="submit" value="SUBMIT">
 		</fieldset>
 	</form>
 </div>
