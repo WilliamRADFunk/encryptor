@@ -1,0 +1,34 @@
+<?php session_start(); ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" prefix="og: http://ogp.me/ns#">
+
+<head>
+<!-- Background photo: https://www.flickr.com/photos/3_dots/ -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Encryptor</title>
+    <link rel="stylesheet" href="css/reset_author_richard_clark.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+</head>
+<body>
+
+<div id="results-box">
+	<h3>TEXT ENCRYPTED</h3>
+	<p class="boxed">Encryption Method Used</p>
+	<p>"<?php echo $_SESSION["cryptoMethod"]; ?>"</p>
+	<p class="boxed">Randomly Generated Key</p>
+	<p>"<?php echo $_SESSION["key"]; ?>"</p>
+	<?php
+		if($_SESSION["emailMe"])
+		{
+			echo "<p>Encrypted text emailed to: " . $_SESSION["emailAddress"];
+		}
+	?>
+	<p class="clearBoth boxed">Encrypted text</p>
+	<textarea name="encryptedtext" rows="10" cols="20"><?php echo $_SESSION["encryptedText"]; ?></textarea>
+</div>
+
+</body>
+</html>
