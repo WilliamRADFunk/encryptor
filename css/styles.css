@@ -1,6 +1,8 @@
 body
 {
 	width: 100%;
+	background: url("../assets/img_background.jpg") center center no-repeat;
+	background-size: contain;
 }
 input,
 select,
@@ -9,10 +11,6 @@ textarea
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 75%;
-}
-select
-{
 	width: 75%;
 }
 label
@@ -35,8 +33,10 @@ legend
 }
 #crypto-box
 {
+	background-color: #DDDDDD;
 	border: 2px solid #000000;
 	margin: 50px auto;
+	opacity: 0.85;
 	width: 25%;
 }
 #output

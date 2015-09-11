@@ -13,9 +13,9 @@
 <body>
 
 <?php
-$title = htmlspecialchars($_POST["title"]);
+$emailAddress = htmlspecialchars($_POST["contact"]);
+$email = htmlspecialchars($_POST["emailMe"]);
 $cryptoMethod = $_POST["crypto-method"];
-$userDefKey = htmlspecialchars($_POST["user-defined-key"]);
 $plaintext = $_POST["plaintext"];
 
 
@@ -25,7 +25,7 @@ switch( $cryptoMethod )
 	{
 		$cleanText = caesarClean($plaintext);
 		echo $cleanText;
-		require_once("php/caesar.php");
+		require_once("caesar.php");
 		$encryptedText = caesarEncrypt($cleanText);
 
 		break;
@@ -77,11 +77,11 @@ switch( $cryptoMethod )
 	function caesarClean($plaintext)
 	{
 		$cleanText = "";
-		for(int i = 0; i < strlen($plaintext); i++)
+		for($i = 0; $i < strlen($plaintext); $i++)
 		{
-			if( (ord($plaintext{i}) >= 32) && ((ord($plaintext{i}) <= 126) )
+			if( (ord($plaintext{$i}) >= 32) && (ord($plaintext{$i}) <= 126) )
 			{
-				$cleanText += $plaintext{i};
+				$cleanText .= $plaintext{$i};
 			}
 		}
 		return $cleanText;
