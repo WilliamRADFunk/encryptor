@@ -3,11 +3,12 @@ body
 	width: 100%;
 	background: url("../assets/img_background.jpg") center center no-repeat;
 	background-size: contain;
+	font-family: Arial;
 }
 input,
 select,
 textarea,
-#check
+#check,
 {
 	display: block;
 	margin-left: auto;
@@ -56,7 +57,8 @@ legend
 	text-align: left;
 	width: 90%;
 }
-#crypto-box
+#crypto-box,
+#results-box
 {
 	background-color: #DDDDDD;
 	border: 2px solid #000000;
@@ -64,9 +66,23 @@ legend
 	opacity: 0.85;
 	width: 25%;
 }
-#output
+#results-box h3
 {
-	display: none;
+	margin-bottom: 30px;
+	margin-top:20px;
+	text-align: center;
+}
+#results-box p
+{
+	margin-bottom: 20px;
+	text-align: center;
+	width: 100%;
+}
+#results-box textarea
+{
+	display: block;
+	margin: 0px auto 20px auto;
+	width: 75%;
 }
 .clearBoth
 {
@@ -77,4 +93,8 @@ legend
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
+}
+.underline
+{
+	text-decoration: underline;
 }

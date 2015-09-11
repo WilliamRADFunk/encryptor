@@ -23,11 +23,18 @@ switch( $cryptoMethod )
 {
 	case "Caesar":
 	{
+		$key = rand(1, 93);
 		$cleanText = caesarClean($plaintext);
-		echo $cleanText;
 		require_once("caesar.php");
-		$encryptedText = caesarEncrypt($cleanText);
-
+		$encryptedText = caesarEncrypt($cleanText, $key);
+		$data = 
+		{
+			key: $key,
+			text: $encryptedText,
+			method: $cryptoMethod,
+			email: $email,
+			address: $emailAddress
+		};
 		break;
 	}
 	case "Keyword":

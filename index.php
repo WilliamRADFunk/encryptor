@@ -15,7 +15,7 @@
 <body>
 
 <div id="crypto-box">
-	<form action="php/controller.php" method="post">
+	<form action="actions/controller.php" method="post">
 		<fieldset>
 			<legend>THE ENCRYPTOR</legend>
 			<p><label for="crypto-method">Encryption Method:</label></p>
@@ -37,9 +37,7 @@
 			<p class="clearBoth"><label for="plaintext">Paste in plaintext to be encrypted:</label></p>
 			<textarea name="plaintext" rows="10" cols="20"></textarea>
 			<input id="btn-submit" type="submit" value="Submit">
-			<p><label id="output" for="encrypted-content">Your encrypted content:</label></p>
 		</fieldset>
-		<output name="encrypted-content" for="contact emailMe crypto-method plaintext"></output>
 	</form>
 </div>
 </body>
