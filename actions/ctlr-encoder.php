@@ -9,24 +9,26 @@
 
 	switch( $_SESSION["cryptoMethod"] )
 	{
-		case "Bitwise":
+		case "Caesar":
+		{
+			require_once("caesar.php");
+			$_SESSION["result"] = caesarEncrypt($plaintext);
+			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
+			break;
+		}
+		case "Keyword":
 		{
 			break;
 		}
-		case "Caesar":
+		case "Vigniere":
 		{
-			$_SESSION["key"] = rand(1, 94);
-			$cleanText = clean($plaintext);
-			require_once("caesar.php");
-			$_SESSION["result"] = caesarEncrypt($cleanText, $_SESSION["key"]);
-			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
 			break;
 		}
 		case "Engima":
 		{
 			break;
 		}
-		case "Geometric":
+		case "Bitwise":
 		{
 			break;
 		}
@@ -34,11 +36,7 @@
 		{
 			break;
 		}
-		case "Keyword":
-		{
-			break;
-		}
-		case "MD5":
+		case "Geometric":
 		{
 			break;
 		}
@@ -50,7 +48,7 @@
 		{
 			break;
 		}
-		case "Vigniere":
+		case "MD5":
 		{
 			break;
 		}
@@ -58,21 +56,6 @@
 		{
 			echo "ERROR: The choice of cryptographic methods did not match any of the available option.";
 		}
-	}
-?>
-
-<?php
-	function clean($plaintext)
-	{
-		$cleanText = "";
-		for($i = 0; $i < strlen($plaintext); $i++)
-		{
-			if( (ord($plaintext{$i}) >= 32) && (ord($plaintext{$i}) <= 126) )
-			{
-				$cleanText .= $plaintext{$i};
-			}
-		}
-		return $cleanText;
 	}
 ?>
 

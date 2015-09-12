@@ -21,7 +21,7 @@
 			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
 			break;
 		}
-		case "Engima":
+		case "Foursquare":
 		{
 			break;
 		}
