@@ -26,6 +26,9 @@
 		}
 		case "Foursquare":
 		{
+			require_once("../ciphers/foursquare.php");
+			$_SESSION["result"] = foursquareDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Geometric":

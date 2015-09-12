@@ -17,10 +17,10 @@
 	// Function called from the controller to decode a string.
 	function foursquareDecode($encryptedText)
 	{
-		$upperLeft = "abcdefghiklmnopqrstuvwxyz";
-		$upperRight = substr($_SESSION["key"], 0, 24);
-		$lowerLeft = substr($_SESSION["key"], 26, 49);
-		$lowerRight = "abcdefghiklmnopqrstuvwxyz";
+		$upperRight = "abcdefghiklmnopqrstuvwxyz";
+		$upperLeft = substr($_SESSION["key"], 0, 24);
+		$lowerRight = substr($_SESSION["key"], 26, 49);
+		$lowerLeft = "abcdefghiklmnopqrstuvwxyz";
 
 		return decode($encryptedText, $upperLeft, $upperRight, $lowerLeft, $lowerRight);
 	}
@@ -46,15 +46,17 @@
 	{
 		$encryptedText = "";
 
-		if( (strlen($plaintext) % 2) != 0 )
+		$cleanText = clean($plaintext);
+
+		if( (strlen($cleanText) % 2) != 0 )
 		{
-			$plaintext .= "x";
+			$cleanText .= "x";
 		}
 		
-		for( $i = 0; $i < strlen($plaintext); $i++ )
+		for( $i = 0; $i < strlen($cleanText) - 1; $i += 2)
 		{
-			$pair = textPairing($plaintext, $i);
-			$encryptedText .= match($pair, $upperLeft, $upperRight, $lowerRight);
+			$pair = textPairing($cleanText, $i);
+			$encryptedText .= match($pair, $upperLeft, $upperRight, $lowerLeft, $lowerRight);
 		}
 
 		return $encryptedText;
@@ -64,13 +66,32 @@
 	{
 		$decodedText = "";
 
-		for( $i = 0; $i < strlen($encryptedText); $i++ )
+		for( $i = 0; $i < strlen($encryptedText) - 1; $i += 2)
 		{
 			$pair = textPairing($encryptedText, $i);
-			$decodedText .= match($pair{$i}, $upperLeft, $upperRight, $lowerRight);
+			$decodedText .= match($pair, $upperLeft, $upperRight, $lowerLeft, $lowerRight);
 		}
 
 		return $decodedText;
+	}
+	// Removes all non-letter characters from the text,
+	// and returns all lowercase.
+	function clean($plaintext)
+	{
+		$cleanText = "";
+		for( $i = 0; $i < strlen($plaintext); $i++ )
+		{
+			if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
+			{
+				$cleanText .= $plaintext{$i};
+			}
+			else if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
+			{
+				$cleanText .= strtolower($plaintext{$i});
+			}
+		}
+
+		return $cleanText;
 	}
 	// Takes a string, and breaks it into pairs.
 	// It uses white space as an EOF signal.
@@ -79,6 +100,7 @@
 		$pair = "";
 		$pair .= $text{$index};
 		$pair .= $text{$index + 1};
+
 		return $pair;
 	}
 	function match($pair, $upperLeft, $upperRight, $lowerLeft, $lowerRight)
@@ -94,14 +116,16 @@
 			$pair = substr_replace($pair, "i", 1, 1);
 		}
 
-		$row1 = ( strpos($upperLeft, $pair{0}) / 5 );
-		$col1 = ( strpos($lowerRight, $pair{1}) % 5 );
-		$pairMatch .= ( strpos($upperRight, (($row * 5) + $col) );
+		$row1 = ( (int)(strpos($upperLeft, $pair{0}) / 5) );
+		$col1 = ( (int)(strpos($lowerRight, $pair{1}) % 5) );
+		$pos = ( ($row1 * 5) + $col1 );
+		$pairMatch .= $upperRight{$pos};
 
-		$row2 = ( strpos($lowerRight, $pair{1}) / 5 );
-		$col2 = ( strpos($upperLeft, $pair{0}) % 5 );
-		$pairMatch .= ( strpos($lowerLeft, (($row * 5) + $col) );
-			
+		$row2 = ( (int)(strpos($lowerRight, $pair{1}) / 5) );
+		$col2 = ( (int)(strpos($upperLeft, $pair{0}) % 5) );
+		$pos = ( ($row2 * 5) + $col2 );
+		$pairMatch .= $lowerLeft{$pos};
+		
 		return $pairMatch;
 	}
 ?>
