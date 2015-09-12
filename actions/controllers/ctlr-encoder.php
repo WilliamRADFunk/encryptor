@@ -11,9 +11,9 @@
 	{
 		case "Caesar":
 		{
-			require_once("caesar.php");
+			require_once("../ciphers/caesar.php");
 			$_SESSION["result"] = caesarEncrypt($plaintext);
-			header("Location: ../results.php");
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Keyword":

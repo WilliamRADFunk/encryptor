@@ -16,9 +16,9 @@
 		}
 		case "Caesar":
 		{
-			require_once("caesar.php");
+			require_once("../ciphers/caesar.php");
 			$_SESSION["result"] = caesarDecode($encryptedText, $_SESSION["key"]);
-			header("Location: ../results.php");
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Foursquare":

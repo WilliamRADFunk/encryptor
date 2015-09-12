@@ -17,7 +17,7 @@
 	<input id="btn-switch" type="submit" value="SWITCH TO DECODER">
 </form>
 <div id="crypto-box">
-	<form action="actions/ctlr-encoder.php" method="post">
+	<form action="actions/controllers/ctlr-encoder.php" method="post">
 		<fieldset>
 			<legend>THE ENCRYPTOR</legend>
 			<p><label for="crypto-method">Encryption Method:</label></p>
