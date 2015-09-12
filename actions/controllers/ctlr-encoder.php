@@ -9,6 +9,10 @@
 
 	switch( $_SESSION["cryptoMethod"] )
 	{
+		case "Bitwise":
+		{
+			break;
+		}
 		case "Caesar":
 		{
 			require_once("../ciphers/caesar.php");
@@ -16,19 +20,14 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "Keyword":
+		case "Foursquare":
 		{
+			require_once("../ciphers/foursquare.php");
+			$_SESSION["result"] = foursquareEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
-		case "Vigniere":
-		{
-			break;
-		}
-		case "Engima":
-		{
-			break;
-		}
-		case "Bitwise":
+		case "Geometric":
 		{
 			break;
 		}
@@ -36,7 +35,11 @@
 		{
 			break;
 		}
-		case "Geometric":
+		case "Keyword":
+		{
+			break;
+		}
+		case "MD5":
 		{
 			break;
 		}
@@ -48,7 +51,7 @@
 		{
 			break;
 		}
-		case "MD5":
+		case "Vigniere":
 		{
 			break;
 		}
