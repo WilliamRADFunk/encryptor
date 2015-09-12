@@ -9,6 +9,10 @@
 
 	switch( $_SESSION["cryptoMethod"] )
 	{
+		case "Bitwise":
+		{
+			break;
+		}
 		case "Caesar":
 		{
 			$_SESSION["key"] = rand(1, 94);
@@ -18,19 +22,11 @@
 			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
 			break;
 		}
-		case "Keyword":
-		{
-			break;
-		}
-		case "Vigniere":
-		{
-			break;
-		}
 		case "Engima":
 		{
 			break;
 		}
-		case "Bitwise":
+		case "Geometric":
 		{
 			break;
 		}
@@ -38,7 +34,11 @@
 		{
 			break;
 		}
-		case "Geometric":
+		case "Keyword":
+		{
+			break;
+		}
+		case "MD5":
 		{
 			break;
 		}
@@ -50,7 +50,7 @@
 		{
 			break;
 		}
-		case "MD5":
+		case "Vigniere":
 		{
 			break;
 		}
