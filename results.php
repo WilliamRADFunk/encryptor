@@ -23,7 +23,7 @@
 	<?php
 		if($_SESSION["emailMe"])
 		{
-			echo "<p>Encrypted text emailed to: " . $_SESSION["emailAddress"] . "</p>";
+			echo "<p>Encrypted text emailed to: ", $_SESSION["emailAddress"], "</p>";
 		}
 	?>
 	<p class="clearBoth boxed">Encrypted text</p>

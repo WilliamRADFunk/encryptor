@@ -13,7 +13,7 @@
 		{
 			require_once("caesar.php");
 			$_SESSION["result"] = caesarEncrypt($plaintext);
-			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
+			header("Location: ../results.php");
 			break;
 		}
 		case "Keyword":

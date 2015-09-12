@@ -18,7 +18,7 @@
 		{
 			require_once("caesar.php");
 			$_SESSION["result"] = caesarDecode($encryptedText, $_SESSION["key"]);
-			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
+			header("Location: ../results.php");
 			break;
 		}
 		case "Foursquare":
