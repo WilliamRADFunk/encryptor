@@ -11,14 +11,14 @@
 		return $encryptedText;
 	}
 
-	function caesarDecode($encryptedText, $key)
+	function caesarDecode($text, $key)
 	{
 		$decodedText = "";
-		for( $i = 0; $i < strlen($encryptedText); $i++ )
+		for( $i = 0; $i < strlen($text); $i++ )
 		{
-			$convertedNum = NumToLetter( $encryptedText{$i} );
-			$char = shift( $key, $convertedNum );
-			$decodedText .= $char;
+			$convertedNum = NumToLetter( $text{$i} );
+			$ch = shift( (-$key), $convertedNum );
+			$decodedText .= $ch;
 		}
 		return $encryptedText;
 	}
@@ -36,10 +36,5 @@
 	function shift($key, $char)
 	{
 		return ( ($char + $key) % 95 );
-	}
-
-	function deShift($key, $char)
-	{
-		return ( ($char - $key) % 95 );
 	}
 ?>

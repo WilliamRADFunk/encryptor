@@ -1,8 +1,10 @@
+<link rel="shortcut icon" href="http://williamrobertfunk.com/Applications/encryptor/favicon.ico">
 <?php 
 	session_start();
 	$_SESSION["emailAddress"] = htmlspecialchars($_POST["contact"]);
 	$_SESSION["email"] = $_POST["emailMe"];
 	$_SESSION["cryptoMethod"] = $_POST["crypto-method"];
+	$_SESSION["result"] = "";
 	$plaintext = $_POST["plaintext"];
 
 

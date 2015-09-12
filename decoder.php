@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" prefix="og: http://ogp.me/ns#">
+<intercept-url pattern="/favicon.ico" access="permitAll" />
 
 <head>
 <!-- Background photo: https://www.flickr.com/photos/41315642@N04/4686290616/in/faves-59382647@N03/ -->
@@ -33,7 +34,7 @@
 				<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>
 				<option class="encryp-opt" value="MD5">MD5 Cipher</option>
 			</select>
-			<p><label for="contact">Key:</label></p>
+			<p><label for="key">Key:</label></p>
 			<input type="text" name="key">
 			<p><label for="contact">Email Address (optional):</label></p>
 			<input type="text" name="contact">

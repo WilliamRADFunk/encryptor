@@ -1,9 +1,11 @@
+<link rel="shortcut icon" href="http://williamrobertfunk.com/Applications/encryptor/favicon.ico">
 <?php 
 	session_start();
 	$_SESSION["emailAddress"] = htmlspecialchars($_POST["contact"]);
 	$_SESSION["email"] = $_POST["emailMe"];
 	$_SESSION["key"] = $_POST["key"];
 	$_SESSION["cryptoMethod"] = $_POST["crypto-method"];
+	$_SESSION["result"] = "";
 	$encryptedText = $_POST["encryptedtext"];
 
 
@@ -12,8 +14,12 @@
 		case "Caesar":
 		{
 			require_once("caesar.php");
+			echo $encryptedText;
+			echo "-------";
 			$_SESSION["result"] = caesarDecode($encryptedText, $_SESSION["key"]);
-			header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
+			echo $_SESSION["result"];
+			echo "Something";
+			//header("Location: http://williamrobertfunk.com/Applications/encryptor/results.php");
 			break;
 		}
 		case "Keyword":

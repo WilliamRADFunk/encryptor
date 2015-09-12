@@ -3,14 +3,19 @@ body
 	font-family: Arial;
 	width: 100%;
 }
+body.decoder
+{
+	background: url("../assets/img_background2.jpg") center center no-repeat;
+	background-size: contain;
+}
 body.encryptor
 {
 	background: url("../assets/img_background.jpg") center center no-repeat;
 	background-size: contain;
 }
-body.decoder
+body.results
 {
-	background: url("../assets/img_background2.jpg") center center no-repeat;
+	background: url("../assets/img_background3.jpg") center center no-repeat;
 	background-size: contain;
 }
 input,
