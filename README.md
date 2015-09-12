@@ -1,7 +1,7 @@
 # encryptor
 An application that encrypts and decodes text using any number of cryptographic algorithms.</br></br>
 
-This application is intended to demonstrate an understanding of the included cryptographic algorithms.</br></br>
+This application is intended to demonstrate an understanding of the included cryptographic algorithms, and a fundamental understanding of PHP.</br></br>
 
 User simply pastes their plaintext into the appropriate form field, selects the encryption algorithm of their choice from the drop down menu, and depending on the algorithm, chooses a key.</br></br>
 
