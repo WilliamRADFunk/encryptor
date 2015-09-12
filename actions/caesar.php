@@ -5,22 +5,22 @@
 		for( $i = 0; $i < strlen($cleanText); $i++ )
 		{
 			$convertedChar = letterToNum( $cleanText{$i} );
-			$code = shift( $key, $convertedChar );
+			$code = shift( $convertedChar, $key );
 			$encryptedText .= chr( $code );
 		}
 		return $encryptedText;
 	}
 
-	function caesarDecode($text, $key)
+	function caesarDecode($encryptedText, $key)
 	{
 		$decodedText = "";
-		for( $i = 0; $i < strlen($text); $i++ )
+		for( $i = 0; $i < strlen($encryptedText); $i++ )
 		{
-			$convertedNum = NumToLetter( $text{$i} );
-			$ch = shift( (-$key), $convertedNum );
+			$shiftedNum = shift( ord($encryptedText{$i}), (-$key) );
+			$ch = NumToLetter( $shiftedNum );
 			$decodedText .= $ch;
 		}
-		return $encryptedText;
+		return $decodedText;
 	}
 
 	function letterToNum($char)
@@ -33,8 +33,15 @@
 		return ( chr($NumValue + 32) );
 	}
 
-	function shift($key, $char)
+	function shift($char, $key)
 	{
-		return ( ($char + $key) % 95 );
+		if( ($char + $key) < 0 )
+		{
+			return ( ($char + $key) + 95 );
+		}
+		else
+		{
+			return ( ($char + $key) % 95 );
+		}
 	}
 ?>

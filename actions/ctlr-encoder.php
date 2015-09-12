@@ -1,4 +1,3 @@
-<link rel="shortcut icon" href="http://williamrobertfunk.com/Applications/encryptor/favicon.ico">
 <?php 
 	session_start();
 	$_SESSION["emailAddress"] = htmlspecialchars($_POST["contact"]);
@@ -12,7 +11,7 @@
 	{
 		case "Caesar":
 		{
-			$_SESSION["key"] = rand(1, 93);
+			$_SESSION["key"] = rand(1, 94);
 			$cleanText = clean($plaintext);
 			require_once("caesar.php");
 			$_SESSION["result"] = caesarEncrypt($cleanText, $_SESSION["key"]);

@@ -6,16 +6,19 @@ body
 body.decoder
 {
 	background: url("../assets/img_background2.jpg") center center no-repeat;
+	background-color: #000000;
 	background-size: contain;
 }
 body.encryptor
 {
 	background: url("../assets/img_background.jpg") center center no-repeat;
+	background-color: #000000;
 	background-size: contain;
 }
 body.results
 {
 	background: url("../assets/img_background3.jpg") center center no-repeat;
+	background-color: #000000;
 	background-size: contain;
 }
 input,
