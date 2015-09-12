@@ -1,31 +1,33 @@
 <?php
 	session_start();
+	// Function called from the controller to encrypt a string.
 	function caesarEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $_SESSION["key"]);
 	}
-
+	// Function called from the controller to decode a string.
 	function caesarDecode($encryptedText, $key)
 	{
 		return decode($encryptedText, $key);
 	}
-
+	// Randomly generates a key unique to the Caesar Cipher.
 	function generateKey()
 	{
 		return ( rand(1, 25) );
 	}
-
+	// Converts a single character into the 0 to 25 integer value.
 	function letterToNum($char)
 	{
 		return ( ord($char) % 97 );
 	}
-
+	// Converts the 0 to 25 integer value into a single character.
 	function NumToLetter($NumValue)
 	{
 		return ( chr($NumValue + 97) );
 	}
-
+	// Shifts the number forward or back (encode or decode) by
+	// the amount specified by a randomly generated key.
 	function shift($char, $key)
 	{
 		// Convert upper to lower.
