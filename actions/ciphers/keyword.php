@@ -9,7 +9,7 @@
 	// Function called from the controller to decode a string.
 	function keywordDecode($encryptedText)
 	{
-		return decode($encryptedText, $key);
+		return decode($encryptedText, $_SESSION["key"]);
 	}
 	// Randomly generates a key unique to the Keyword Cipher.
 	function generateKey()
@@ -27,15 +27,28 @@
 		
 		fclose($dictionary);
 
-		return $key;
+		return trim($key);
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cleanText = clean($plaintext);
-		$cipherTable = tableMaker($key);
+		$cipherString = getCipherString($key);
 
+		for( $i = 0; $i < strlen($cleanText); $i++ )
+		{
+			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
+			{
+				$subNum = strpos($cipherString, $cleanText{$i});
+				$encryptedText .= $alphabetTemplate{$subNum};
+			}
+			else
+			{
+				$encryptedText .= $cleanText{$i};
+			}
+		}
 
 		return $encryptedText;
 	}
@@ -43,6 +56,21 @@
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
+		$cipherString = getCipherString($key);
+
+		for( $i = 0; $i < strlen($encryptedText); $i++ )
+		{
+			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
+			{
+				$subNum = strpos($alphabetTemplate, $encryptedText{$i});
+				$decodedText .= $cipherString{$subNum};
+			}
+			else
+			{
+				$decodedText .= $encryptedText{$i};
+			}
+		}
 
 		return $decodedText;
 	}
@@ -52,33 +80,33 @@
 		$cleanText = "";
 		for( $i = 0; $i < strlen($plaintext); $i++ )
 		{
-			if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
-			{
-				$cleanText .= $plaintext{$i};
-			}
-			else if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
+			if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
 			{
 				$cleanText .= strtolower($plaintext{$i});
+			}
+			else
+			{
+				$cleanText .= $plaintext{$i};
 			}
 		}
 
 		return $cleanText;
 	}
-	// Uses keyword to construct the 5 x 5 letter cipher table.
-	function tableMaker($key)
+	// Uses keyword to construct the 5 x 5 letter cipher string.
+	function getCipherString($key)
 	{
 		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cleanKey = stripRepeats($key);
-		$cipherTable = $cleanKey;
+		$cipherString = $cleanKey;
 
 		for( $i = 0; $i < strlen($alphabetTemplate); $i++ )
 		{
-			if( strpos($cipherTable, $alphabetTemplate{$i}) === false )
+			if( strpos($cipherString, $alphabetTemplate{$i}) === false )
 			{
-				$cipherTable .= $alphabetTemplate{$i};
+				$cipherString .= $alphabetTemplate{$i};
 			}
 		}
-		return $cipherTable;
+		return trim($cipherString);
 	}
 	// Removes repeated letters from a string.
 	function stripRepeats($key)
@@ -92,41 +120,5 @@
 			}
 		}
 		return trim($newKey);
-	}
-	// Takes a string, and breaks it into pairs.
-	// It uses white space as an EOF signal.
-	function textPairing($text, $index)
-	{
-		$pair = "";
-		$pair .= $text{$index};
-		$pair .= $text{$index + 1};
-
-		return $pair;
-	}
-	// Matches the input pair against a pair from the opposing tables.
-	function match($pair, $upperLeft, $upperRight, $lowerLeft, $lowerRight)
-	{
-		$pairMatch = "";
-
-		if($pair{0} == "j")
-		{
-			$pair = substr_replace($pair, "i", 0, 1);
-		}
-		if($pair{1} == "j")
-		{
-			$pair = substr_replace($pair, "i", 1, 1);
-		}
-
-		$row1 = ( (int)(strpos($upperLeft, $pair{0}) / 5) );
-		$col1 = ( (int)(strpos($lowerRight, $pair{1}) % 5) );
-		$pos = ( ($row1 * 5) + $col1 );
-		$pairMatch .= $upperRight{$pos};
-
-		$row2 = ( (int)(strpos($lowerRight, $pair{1}) / 5) );
-		$col2 = ( (int)(strpos($upperLeft, $pair{0}) % 5) );
-		$pos = ( ($row2 * 5) + $col2 );
-		$pairMatch .= $lowerLeft{$pos};
-
-		return $pairMatch;
 	}
 ?>
