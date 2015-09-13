@@ -102,6 +102,7 @@
 
 		return $pair;
 	}
+	// Matches the input pair against a pair from the opposing tables.
 	function match($pair, $upperLeft, $upperRight, $lowerLeft, $lowerRight)
 	{
 		$pairMatch = "";

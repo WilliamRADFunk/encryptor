@@ -25,7 +25,7 @@
 					<option class="encryp-opt" value="Foursquare">Foursquare Cipher</option>
 					<!--<option class="encryp-opt" value="Geometric">Geometric Cipher</option>-->
 					<!--<option class="encryp-opt" value="Hill">Hill Cipher</option>-->
-					<!--<option class="encryp-opt" value="Keyword">Keyword Cipher</option>-->
+					<option class="encryp-opt" value="Keyword">Keyword Cipher</option>
 					<!--<option class="encryp-opt" value="MD5">MD5 Cipher</option>-->
 					<!--<option class="encryp-opt" value="Playfair">Playfair Cipher</option>-->
 					<!--<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>-->
