@@ -1,17 +1,17 @@
 <?php 
 	session_start();
 	// Function called from the controller to encrypt a string.
-	function keywordEncrypt($plaintext)
+	function playfairEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $_SESSION["key"]);
 	}
 	// Function called from the controller to decode a string.
-	function keywordDecode($encryptedText)
+	function playfairDecode($encryptedText)
 	{
 		return decode($encryptedText, $_SESSION["key"]);
 	}
-	// Randomly generates a key unique to the Keyword Cipher.
+	// Randomly generates a key unique to the Playfair Cipher.
 	function generateKey()
 	{
 		$dictionary = fopen( "../../assets/TemporaryDictionaryFiltered.txt", "r") or die("Unable to open file!" );
@@ -33,15 +33,15 @@
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
-		$alphabetTemplate = "abcdefghijklmnopqrstuvwxyz";
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cleanText = clean($plaintext);
-		$cipherString = getCipherString($key);
+		$cipherTable = tableMaker($key);
 
 		for( $i = 0; $i < strlen($cleanText); $i++ )
 		{
 			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
 			{
-				$subNum = strpos($cipherString, $cleanText{$i});
+				$subNum = strpos($cipherTable, $cleanText{$i});
 				$encryptedText .= $alphabetTemplate{$subNum};
 			}
 			else
@@ -56,15 +56,15 @@
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
-		$alphabetTemplate = "abcdefghijklmnopqrstuvwxyz";
-		$cipherString = getCipherString($key);
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
+		$cipherTable = tableMaker($key);
 
 		for( $i = 0; $i < strlen($encryptedText); $i++ )
 		{
 			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
 			{
 				$subNum = strpos($alphabetTemplate, $encryptedText{$i});
-				$decodedText .= $cipherString{$subNum};
+				$decodedText .= $cipherTable{$subNum};
 			}
 			else
 			{
@@ -74,13 +74,17 @@
 
 		return $decodedText;
 	}
-	// Cleans plaintext specific to the keyword cipher
+	// Cleans plaintext specific to the playfair cipher
 	function clean($plaintext)
 	{
 		$cleanText = "";
 		for( $i = 0; $i < strlen($plaintext); $i++ )
 		{
-			if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
+			if( (ord($plaintext{$i}) == 74) || (ord($plaintext{$i}) == 106) )
+			{
+				$cleanText .= "i";
+			}
+			else if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
 			{
 				$cleanText .= strtolower($plaintext{$i});
 			}
@@ -92,21 +96,21 @@
 
 		return $cleanText;
 	}
-	// Uses keyword to construct the 25 letter cipher string.
-	function getCipherString($key)
+	// Uses keyword to construct the 5 x 5 letter cipher string.
+	function tableMaker($key)
 	{
-		$alphabetTemplate = "abcdefghijklmnopqrstuvwxyz";
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cleanKey = stripRepeats($key);
-		$cipherString = $cleanKey;
+		$cipherTable = $cleanKey;
 
 		for( $i = 0; $i < strlen($alphabetTemplate); $i++ )
 		{
-			if( strpos($cipherString, $alphabetTemplate{$i}) === false )
+			if( strpos($cipherTable, $alphabetTemplate{$i}) === false )
 			{
-				$cipherString .= $alphabetTemplate{$i};
+				$cipherTable .= $alphabetTemplate{$i};
 			}
 		}
-		return trim($cipherString);
+		return trim($cipherTable);
 	}
 	// Removes repeated letters from a string.
 	function stripRepeats($key)
@@ -114,6 +118,10 @@
 		$newKey = "";
 		for( $i = 0; $i < strlen($key); $i++ )
 		{
+			if($key{$i} == "j")
+			{
+				$key = substr_replace($key, "i", $key{$i}, 1);
+			}
 			if( strpos($newKey, $key{$i}) === false )
 			{
 				$newKey .= $key{$i};
