@@ -3,6 +3,7 @@
 	// Function called from the controller to encrypt a string.
 	function keywordEncrypt($plaintext)
 	{
+		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $key);
 	}
 	// Function called from the controller to decode a string.
@@ -13,6 +14,19 @@
 	// Randomly generates a key unique to the Keyword Cipher.
 	function generateKey()
 	{
+		$dictionary = fopen( "../../assets/TemporaryDictionaryFiltered.txt", "r") or die("Unable to open file!" );
+		$key = "";
+		$count = 0;
+		$word = rand(1, 50086);
+
+		while( !feof($dictionary) && $count < $word )
+		{
+			$count++;
+			$key = fgets($dictionary);
+		}
+		
+		fclose($dictionary);
+
 		return $key;
 	}
 	// Take a perfectly good string and encodes it.
