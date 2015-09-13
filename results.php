@@ -25,7 +25,7 @@
 			}
 		?>
 		<p class="clearBoth boxed">Result</p>
-		<textarea rows="10" cols="20"><?php echo $_SESSION["result"]; ?></textarea>
+		<textarea rows="12" cols="20"><?php echo $_SESSION["result"]; ?></textarea>
 	</div>
 </body>
 <?php
