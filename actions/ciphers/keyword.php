@@ -4,7 +4,7 @@
 	function keywordEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
-		return encode($plaintext, $key);
+		return encode($plaintext, $_SESSION["key"]);
 	}
 	// Function called from the controller to decode a string.
 	function keywordDecode($encryptedText)
@@ -33,8 +33,9 @@
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
-
 		$cleanText = clean($plaintext);
+		$cipherTable = tableMaker($key);
+
 
 		return $encryptedText;
 	}
@@ -49,8 +50,48 @@
 	function clean($plaintext)
 	{
 		$cleanText = "";
+		for( $i = 0; $i < strlen($plaintext); $i++ )
+		{
+			if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
+			{
+				$cleanText .= $plaintext{$i};
+			}
+			else if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
+			{
+				$cleanText .= strtolower($plaintext{$i});
+			}
+		}
 
 		return $cleanText;
+	}
+	// Uses keyword to construct the 5 x 5 letter cipher table.
+	function tableMaker($key)
+	{
+		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
+		$cleanKey = stripRepeats($key);
+		$cipherTable = $cleanKey;
+
+		for( $i = 0; $i < strlen($alphabetTemplate); $i++ )
+		{
+			if( strpos($cipherTable, $alphabetTemplate{$i}) === false )
+			{
+				$cipherTable .= $alphabetTemplate{$i};
+			}
+		}
+		return $cipherTable;
+	}
+	// Removes repeated letters from a string.
+	function stripRepeats($key)
+	{
+		$newKey = "";
+		for( $i = 0; $i < strlen($key); $i++ )
+		{
+			if( strpos($newKey, $key{$i}) === false )
+			{
+				$newKey .= $key{$i};
+			}
+		}
+		return trim($newKey);
 	}
 	// Takes a string, and breaks it into pairs.
 	// It uses white space as an EOF signal.
