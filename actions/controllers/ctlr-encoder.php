@@ -14,6 +14,9 @@
 	{
 		case "Bitwise":
 		{
+			require_once("../ciphers/bitwise.php");
+			$_SESSION["result"] = bitwiseEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Caesar":
@@ -32,30 +35,51 @@
 		}
 		case "Geometric":
 		{
+			require_once("../ciphers/geometric.php");
+			$_SESSION["result"] = geometricEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Hill":
 		{
+			require_once("../ciphers/hill.php");
+			$_SESSION["result"] = hillEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Keyword":
 		{
+			require_once("../ciphers/keyword.php");
+			$_SESSION["result"] = keywordEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "MD5":
 		{
+			require_once("../ciphers/md5.php");
+			$_SESSION["result"] = md5Encrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Playfair":
 		{
+			require_once("../ciphers/playfair.php");
+			$_SESSION["result"] = playfairEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Transposition":
 		{
+			require_once("../ciphers/transposition.php");
+			$_SESSION["result"] = transpositionEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Vigniere":
 		{
+			require_once("../ciphers/vigniere.php");
+			$_SESSION["result"] = vigniereEncrypt($plaintext);
+			header("Location: ../../results.php");
 			break;
 		}
 		default:

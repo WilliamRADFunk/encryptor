@@ -1,14 +1,14 @@
 <?php 
 	session_start();
 	// Function called from the controller to encrypt a string.
-	function foursquareEncrypt($plaintext)
+	function bitwiseEncrypt($plaintext)
 	{
 		
 
 		return encode($plaintext);
 	}
 	// Function called from the controller to decode a string.
-	function foursquareDecode($encryptedText)
+	function bitwiseDecode($encryptedText)
 	{
 		
 

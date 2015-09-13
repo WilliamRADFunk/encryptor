@@ -15,6 +15,9 @@
 	{
 		case "Bitwise":
 		{
+			require_once("../ciphers/bitwise.php");
+			$_SESSION["result"] = bitwiseDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Caesar":
@@ -33,30 +36,51 @@
 		}
 		case "Geometric":
 		{
+			require_once("../ciphers/geometric.php");
+			$_SESSION["result"] = geometricDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Hill":
 		{
+			require_once("../ciphers/hill.php");
+			$_SESSION["result"] = hillDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Keyword":
 		{
+			require_once("../ciphers/keyword.php");
+			$_SESSION["result"] = keywordDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "MD5":
 		{
+			require_once("../ciphers/md5.php");
+			$_SESSION["result"] = md5Decode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Playfair":
 		{
+			require_once("../ciphers/playfair.php");
+			$_SESSION["result"] = playfairDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Transposition":
 		{
+			require_once("../ciphers/transposition.php");
+			$_SESSION["result"] = transpositionDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		case "Vigniere":
 		{
+			require_once("../ciphers/vigniere.php");
+			$_SESSION["result"] = vigniereDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
 			break;
 		}
 		default:
