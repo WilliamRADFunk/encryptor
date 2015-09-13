@@ -14,36 +14,29 @@
 	// Randomly generates a key unique to the Bitwise Cipher.
 	function generateKey($length)
 	{
-		$temp = "";
+		$key = "";
 		for( $i = 0; $i < $length; $i++ )
 		{
-			$temp .= chr( rand(97, 122) );
+			$key .= dechex( rand(97, 122) );
 		}
-		echo $temp, "<br>";
-		$key = bin2hex( pack('H*', $temp) );
-		echo $key, "<br>";
 		return $key;
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
 	{
-		$encryptedText = "";
-
 		$cleanText = clean($plaintext);
-		echo $cleanText, "<br>";
-		
-
-
-		return $encryptedText;
+		return bin2hex( pack('H*', $cleanText) ^ pack('H*', $key) );
 	}
 	// Take a chunk of mysterious code and decode it.
 	function decode($encryptedText, $key)
 	{
-		$decodedText = "";
-
-
-
-		return $decodedText;
+		$decodedText = bin2hex( pack('H*', $encryptedText) ^ pack('H*', $key) );
+		for( $i = 0; $i < strlen($decodedText) - 1; $i += 2 )
+		{
+			$AscVal = hexdec( substr($decodedText, $i, 2) );
+			$readableText .= chr($AscVal);
+		}
+		return $readableText;
 	}
 	// First converts every character into its Ascii equivalent.
 	// Then it converts the Ascii value into hex values.

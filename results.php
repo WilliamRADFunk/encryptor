@@ -17,14 +17,14 @@
 		<p class="boxed">Encryption Method Used</p>
 		<p>"<?php echo $_SESSION["cryptoMethod"]; ?>"</p>
 		<p class="boxed">Key</p>
-		<p>"<?php echo $_SESSION["key"]; ?>"</p>
+		<textarea rows="10" cols="20"><?php echo $_SESSION["key"]; ?></textarea>
 		<?php
 			if($_SESSION["emailMe"])
 			{
 				echo "<p>Encrypted text emailed to: ", $_SESSION["emailAddress"], "</p>";
 			}
 		?>
-		<p class="clearBoth boxed">Encrypted text</p>
+		<p class="clearBoth boxed">Result</p>
 		<textarea rows="10" cols="20"><?php echo $_SESSION["result"]; ?></textarea>
 	</div>
 </body>
