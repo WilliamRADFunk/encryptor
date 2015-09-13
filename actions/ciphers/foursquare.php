@@ -17,10 +17,10 @@
 	// Function called from the controller to decode a string.
 	function foursquareDecode($encryptedText)
 	{
+		$upperLeft = substr($_SESSION["key"], 0, 25);
 		$upperRight = "abcdefghiklmnopqrstuvwxyz";
-		$upperLeft = substr($_SESSION["key"], 0, 24);
-		$lowerRight = substr($_SESSION["key"], 26, 49);
 		$lowerLeft = "abcdefghiklmnopqrstuvwxyz";
+		$lowerRight = substr($_SESSION["key"], 26);
 
 		return decode($encryptedText, $upperLeft, $upperRight, $lowerLeft, $lowerRight);
 	}
@@ -38,7 +38,6 @@
 			$truncatedString = substr_replace($alphabetTemplate, "", $randomLetterIndex, 1);
 			$alphabetTemplate = $truncatedString;
 		}
-
 		return $key;
 	}
 	// Take a perfectly good string and encodes it.
@@ -125,7 +124,7 @@
 		$col2 = ( (int)(strpos($upperLeft, $pair{0}) % 5) );
 		$pos = ( ($row2 * 5) + $col2 );
 		$pairMatch .= $lowerLeft{$pos};
-		
+
 		return $pairMatch;
 	}
 ?>
