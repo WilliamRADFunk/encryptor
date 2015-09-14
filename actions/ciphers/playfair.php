@@ -37,19 +37,12 @@
 		$cleanText = clean($plaintext);
 		$cipherTable = tableMaker($key);
 
-		for( $i = 0; $i < strlen($cleanText); $i++ )
+		for( $i = 0; $i < strlen($cleanText) - 1; $i += 2 )
 		{
-			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
-			{
-				$subNum = strpos($cipherTable, $cleanText{$i});
-				$encryptedText .= $alphabetTemplate{$subNum};
-			}
-			else
-			{
-				$encryptedText .= $cleanText{$i};
-			}
+			$pair = textPairing($cleanText, $i);
+			$match = encodeMatch($pair, $cipherTable);
+			$encryptedText .= $match;
 		}
-
 		return $encryptedText;
 	}
 	// Take a chunk of mysterious code and decode it.
@@ -59,41 +52,46 @@
 		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cipherTable = tableMaker($key);
 
-		for( $i = 0; $i < strlen($encryptedText); $i++ )
+		for( $i = 0; $i < strlen($encryptedText) - 1; $i += 2 )
 		{
-			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
-			{
-				$subNum = strpos($alphabetTemplate, $encryptedText{$i});
-				$decodedText .= $cipherTable{$subNum};
-			}
-			else
-			{
-				$decodedText .= $encryptedText{$i};
-			}
+			$pair = textPairing($encryptedText, $i);
+			$match = decodeMatch($pair, $cipherTable);
+			$decodedText .= $match;
 		}
 
 		return $decodedText;
 	}
 	// Cleans plaintext specific to the playfair cipher
+	// Only letters count, upper is changed to lower, and
+	// an odd length string is padded with an extra "x."
 	function clean($plaintext)
 	{
 		$cleanText = "";
+
 		for( $i = 0; $i < strlen($plaintext); $i++ )
 		{
 			if( (ord($plaintext{$i}) == 74) || (ord($plaintext{$i}) == 106) )
 			{
 				$cleanText .= "i";
+				continue;
 			}
-			else if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
+			
+			if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
 			{
-				$cleanText .= strtolower($plaintext{$i});
+				$plaintext = substr_replace($plaintext, strtolower($plaintext{$i}), $plaintext{$i}, 1);
 			}
-			else
+
+			if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
 			{
 				$cleanText .= $plaintext{$i};
 			}
 		}
 
+		if( (strlen($cleanText) % 2) != 0 )
+		{
+			$cleanText .= "x";
+		}
+		
 		return $cleanText;
 	}
 	// Uses keyword to construct the 5 x 5 letter cipher string.
@@ -128,5 +126,192 @@
 			}
 		}
 		return trim($newKey);
+	}
+	// Takes a string, and breaks it into pairs.
+	// It uses white space as an EOF signal.
+	function textPairing($text, $index)
+	{
+		$pair = "";
+		$pair .= $text{$index};
+		$pair .= $text{$index + 1};
+
+		return $pair;
+	}
+	// Matches the input pair against a pair from the opposing tables.
+	function encodeMatch($pair, $cipherTable)
+	{
+		$pairMatch = "";
+
+
+		$row1 = ( (int)(strpos($cipherTable, $pair{0}) / 5) );
+		$col1 = ( (int)(strpos($cipherTable, $pair{0}) % 5) );
+
+		$row2 = ( (int)(strpos($cipherTable, $pair{1}) / 5) );
+		$col2 = ( (int)(strpos($cipherTable, $pair{1}) % 5) );
+
+		if( $pair{0} == $pair{1} )
+		{
+			if( $pos1 == 24 )
+			{
+				$pairMatch .= $cipherTable{ 0 };
+				$pairMatch .= $cipherTable{ 0 };
+			}
+			else if ( $row1 == 4 )
+			{
+				$pairMatch .= $cipherTable{ $col1 + 1 };
+				$pairMatch .= $cipherTable{ $col1 + 1 };
+			}
+			else if ( $col1 == 4 )
+			{
+				$pairMatch .= $cipherTable{ (($row1 + 1) * 5) };
+				$pairMatch .= $cipherTable{ (($row1 + 1) * 5) };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ (($row1 + 1) * 5) + $col1 + 1 };
+				$pairMatch .= $cipherTable{ (($row1 + 1) * 5) + $col1 + 1 };
+			}
+		}
+		else if($row1 == $row2)
+		{
+			$pos1 = ( ($row1 * 5) + $col1 );
+			$pos2 = ( ($row2 * 5) + $col2 );
+			if($col1 < 4)
+			{
+				$pairMatch .= $cipherTable{ $pos1 + 1 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ ($row1 * 5) };
+			}
+
+			if($col2 < 4)
+			{
+				$pairMatch .= $cipherTable{ $pos2 + 1 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ ($row2 * 5) };
+			}
+		}
+		else if($col1 == $col2)
+		{
+			$pos1 = ( ($row1 * 5) + $col1 );
+			$pos2 = ( ($row2 * 5) + $col2 );
+			if($row1 < 4)
+			{
+				$pairMatch .= $cipherTable{ $pos1 + 5 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{$col1};
+			}
+
+			if($row2 < 4)
+			{
+				$pairMatch .= $cipherTable{ $pos2 + 5 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{$col2};
+			}
+		}
+		else
+		{
+			$pos1 = ( ($row1 * 5) + $col2 );
+			$pos2 = ( ($row2 * 5) + $col1 );
+			$pairMatch .= $cipherTable{$pos1};
+			$pairMatch .= $cipherTable{$pos2};
+		}
+
+		return $pairMatch;
+	}
+	// Matches the input pair against a pair from the opposing tables.
+	function decodeMatch($pair, $cipherTable)
+	{
+		$pairMatch = "";
+
+
+		$row1 = ( (int)(strpos($cipherTable, $pair{0}) / 5) );
+		$col1 = ( (int)(strpos($cipherTable, $pair{0}) % 5) );
+
+		$row2 = ( (int)(strpos($cipherTable, $pair{1}) / 5) );
+		$col2 = ( (int)(strpos($cipherTable, $pair{1}) % 5) );
+
+		$pos1 = ( ($row1 * 5) + $col1 );
+		$pos2 = ( ($row2 * 5) + $col2 );
+
+		if( $pair{0} == $pair{1} )
+		{
+			if( $pos1 == 0 )
+			{
+				$pairMatch .= $cipherTable{ 24 };
+				$pairMatch .= $cipherTable{ 24 };
+			}
+			else if ( $row1 == 0 )
+			{
+				$pairMatch .= $cipherTable{ 20 + $col1 - 1 };
+				$pairMatch .= $cipherTable{ 20 + $col1 - 1 };
+			}
+			else if ( $col1 == 0 )
+			{
+				$pairMatch .= $cipherTable{ (($row1 - 1) * 5) + 4 };
+				$pairMatch .= $cipherTable{ (($row1 - 1) * 5) + 4 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ (($row1 - 1) * 5) + $col1 - 1 };
+				$pairMatch .= $cipherTable{ (($row1 - 1) * 5) + $col1 - 1 };
+			}
+		}
+		else if($row1 == $row2)
+		{
+			if($col1 != 0)
+			{
+				$pairMatch .= $cipherTable{ $pos1 - 1 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ ($row1 * 5) + 4 };
+			}
+
+			if($col2 != 0)
+			{
+				$pairMatch .= $cipherTable{ $pos2 - 1 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ ($row2 * 5) + 4 };
+			}
+		}
+		else if($col1 == $col2)
+		{
+			if($row1 != 0)
+			{
+				$pairMatch .= $cipherTable{ $pos1 - 5 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ 20 + $col1};
+			}
+
+			if($row2 != 0)
+			{
+				$pairMatch .= $cipherTable{ $pos2 - 5 };
+			}
+			else
+			{
+				$pairMatch .= $cipherTable{ 20 + $col2};
+			}
+		}
+		else
+		{
+			$pos1 = ( ($row1 * 5) + $col2 );
+			$pos2 = ( ($row2 * 5) + $col1 );
+			$pairMatch .= $cipherTable{$pos1};
+			$pairMatch .= $cipherTable{$pos2};
+		}
+
+		return $pairMatch;
 	}
 ?>
