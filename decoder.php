@@ -29,7 +29,7 @@
 					<!--<option class="encryp-opt" value="MD5">MD5 Cipher</option>-->
 					<option class="encryp-opt" value="Playfair">Playfair Cipher</option>
 					<!--<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>-->
-					<!--<option class="encryp-opt" value="Vigniere">Vigniere Cipher</option>-->
+					<option class="encryp-opt" value="Vigniere">Vigenere Cipher</option>
 				</select>
 				<p><label for="key">Key:</label></p>
 				<textarea name="key" rows="4" cols="20"></textarea>
