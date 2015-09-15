@@ -68,7 +68,7 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "Transposition":
+		case "Railfence":
 		{
 			require_once("../ciphers/railfence.php");
 			$_SESSION["result"] = railfenceEncrypt($plaintext);

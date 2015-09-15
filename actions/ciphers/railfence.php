@@ -14,65 +14,52 @@
 	// Randomly generates a key unique to the Railfence Cipher.
 	function generateKey()
 	{
-		return rand(3, 5);
+		return (rand(3, 5));
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
 		$cleanText = clean($plaintext);
-		$textLength = getTextLength($cleanText);
-		$paddedText - padText($cleanText, $key, $textLength);
-		$numOfRows = $textLength / $key;
+		$paddedText = padText($cleanText, $key);
+
+		$counter = 0;
 
 		for( $i = 0; $i < $key; $i++)
 		{
-			$counter = 0;
-			for( $j = $i; $j < strlen($cleanText); $j++ )
+			$encryptedText .= $paddedText{$i};
+			for( $j = $i + 1; $j < strlen($paddedText); $j++ )
 			{
-				if( (ord($cleanText{$j}) >= 97) && (ord($cleanText{$j}) <= 122) )
-				{
-					$counter++;
-					if($counter == $key)
-					{
-						$encryptedText .= $paddedText{$j};
-						$counter = 0;
-					}
-				}
-				else
+				$counter++;
+				if( ($counter % $key) == 0 )
 				{
 					$encryptedText .= $paddedText{$j};
+					$counter = 0;
 				}
 			}
+			$counter = 0;
 		}
-
 		return $encryptedText;
 	}
 	// Take a chunk of mysterious code and decode it.
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
-		$cleanText = clean($encryptedText);
+
+		$counter = 0;
 
 		for( $i = 0; $i < $key; $i++)
 		{
-			$counter = 0;
-			for( $j = $i; $j < strlen($cleanText); $j++ )
+			for( $j = $i + 1; $j < strlen($encryptedText); $j++ )
 			{
-				if( (ord($cleanText{$j}) >= 97) && (ord($cleanText{$j}) <= 122) )
+				$counter++;
+				if( ($counter % $key) == 0 )
 				{
-					$counter++;
-					if($counter == $key)
-					{
-						$decodedText .= $paddedText{$j};
-						$counter = 0;
-					}
-				}
-				else
-				{
-					$decodedText .= $paddedText{$j};
+					$decodedText .= $encryptedText{$j};
+					$counter = 0;
 				}
 			}
+			$counter = 0;
 		}
 
 		return $decodedText;
@@ -89,7 +76,7 @@
 			{
 				$cleanText .= strtolower($plaintext{$i});
 			}
-			else
+			else if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
 			{
 				$cleanText .= $plaintext{$i};
 			}
@@ -97,32 +84,20 @@
 		
 		return $cleanText;
 	}
-	// Gets length of string where only letters count.
-	function getTextLength($cleanText)
-	{
-		$counter = 0;
-		for( $i = 0; $i < strlen($cleanText); $i += $key )
-		{
-			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
-			{
-				$counter++;
-			}
-		}
-		return $counter;
-	}
 	// Adds extraneous characters to the text to make the cipher of
 	// a modable number with the key.
-	function padText($cleanText, $key, $length)
+	function padText($cleanText, $key)
 	{
 		$paddedText = "";
-		if( (strlen($length) % $key) == 0 )
+		if( (strlen($cleanText) % $key) == 0 )
 		{
 			return $cleanText;
 		}
 		else
 		{
-			$paddedText .= $cleanText;
-			for( $i = 0; $i < $key; $i++ )
+			$paddedText = $cleanText;
+			$textLength = strlen($cleanText);
+			for( $i = $textLength; $i < ( $textLength + ($textLength % $key) ); $i++ )
 			{
 				$paddedText .= "j";
 			}
