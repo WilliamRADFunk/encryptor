@@ -25,22 +25,27 @@
 		$paddedText - padText($cleanText, $key, $textLength);
 		$numOfRows = $textLength / $key;
 
-		$counter = 0;
-		for( $i = 0; $i < strlen($cleanText); $i++ )
+		for( $i = 0; $i < $key; $i++)
 		{
-			if( ($counter % $key) == 0)
+			$counter = 0;
+			for( $j = $i; $j < strlen($cleanText); $j++ )
 			{
-				if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
+				if( (ord($cleanText{$j}) >= 97) && (ord($cleanText{$j}) <= 122) )
 				{
-					$encryptedText .= encodeMatch($vKey{$counter++}, $cleanText{$i});
 					$counter++;
+					if($counter == $key)
+					{
+						$encryptedText .= $paddedText{$j};
+						$counter = 0;
+					}
 				}
 				else
 				{
-					$encryptedText .= $cleanText{$i};
+					$encryptedText .= $paddedText{$j};
 				}
 			}
 		}
+
 		return $encryptedText;
 	}
 	// Take a chunk of mysterious code and decode it.
@@ -49,16 +54,24 @@
 		$decodedText = "";
 		$cleanText = clean($encryptedText);
 
-		$counter = 0;
-		for( $i = 0; $i < strlen($encryptedText); $i++ )
+		for( $i = 0; $i < $key; $i++)
 		{
-			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
+			$counter = 0;
+			for( $j = $i; $j < strlen($cleanText); $j++ )
 			{
-				$decodedText .= decodeMatch($vKey{$counter++}, $encryptedText{$i});
-			}
-			else
-			{
-				$decodedText .= $encryptedText{$i};
+				if( (ord($cleanText{$j}) >= 97) && (ord($cleanText{$j}) <= 122) )
+				{
+					$counter++;
+					if($counter == $key)
+					{
+						$decodedText .= $paddedText{$j};
+						$counter = 0;
+					}
+				}
+				else
+				{
+					$decodedText .= $paddedText{$j};
+				}
 			}
 		}
 
@@ -115,23 +128,5 @@
 			}
 			return $paddedText;
 		}
-	}
-	// Finds an encryption match for each encodable character.
-	function encodeMatch($keyChar, $textChar)
-	{
-			$index1 = (ord($textChar) % 97);
-			$index2 = (ord($keyChar) % 97);
-			return chr( (($index1 + $index2) % 26) + 97 );
-	}
-	// Decodes each inputed character using the key.
-	function decodeMatch($keyChar, $textChar)
-	{
-			$index1 = (ord($textChar) % 97);
-			$index2 = (ord($keyChar) % 97);
-			if( ($index1 - $index2) < 0)
-			{
-				return chr( (($index1 - $index2) + 26) + 97 );
-			}
-			return chr( (abs($index1 - $index2) % 26) + 97 );
 	}
 ?>
