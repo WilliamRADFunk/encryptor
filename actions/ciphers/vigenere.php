@@ -97,6 +97,7 @@
 		
 		return $cleanText;
 	}
+	// Finds the number of encodable characters.
 	function getTextLength($cleanText)
 	{
 		$counter = 0;
@@ -109,6 +110,8 @@
 		}
 		return $counter;
 	}
+	// Converts keyword into a key that matches length of plaintext's
+	// total number of encodable characters.
 	function getVKey( $key, $length )
 	{
 		$vKey = "";
@@ -126,12 +129,14 @@
 		}
 		return $vKey;
 	}
+	// Finds an encryption match for each encodable character.
 	function encodeMatch($keyChar, $textChar)
 	{
 			$index1 = (ord($textChar) % 97);
 			$index2 = (ord($keyChar) % 97);
 			return chr( (($index1 + $index2) % 26) + 97 );
 	}
+	// Decodes each inputed character using the key.
 	function decodeMatch($keyChar, $textChar)
 	{
 			$index1 = (ord($textChar) % 97);
