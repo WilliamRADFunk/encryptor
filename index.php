@@ -23,12 +23,12 @@
 					<option class="encryp-opt" value="Bitwise">Bitwise Cipher</option>
 					<option class="encryp-opt" value="Caesar">Caesar Cipher</option>
 					<option class="encryp-opt" value="Foursquare">Foursquare Cipher</option>
-					<!--<option class="encryp-opt" value="Geometric">Geometric Cipher</option>-->
+					<!--<option class="encryp-opt" value="Geometric">Transposition Cipher (Geometric)</option>-->
 					<!--<option class="encryp-opt" value="Hill">Hill Cipher</option>-->
 					<option class="encryp-opt" value="Keyword">Keyword Cipher</option>
 					<!--<option class="encryp-opt" value="RSA">RSA Cipher</option>-->
 					<option class="encryp-opt" value="Playfair">Playfair Cipher</option>
-					<!--<option class="encryp-opt" value="Transposition">Transposition (Rail-Fence Depth 2) Cipher</option>-->
+					<option class="encryp-opt" value="Railfence">Transposition Cipher (Rail-Fence)</option>
 					<option class="encryp-opt" value="Vigniere">Vigenere Cipher</option>
 				</select>
 				<p><label for="contact">Email Address (optional):</label></p>

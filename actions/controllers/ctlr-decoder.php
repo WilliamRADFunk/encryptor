@@ -71,8 +71,8 @@
 		}
 		case "Transposition":
 		{
-			require_once("../ciphers/transposition.php");
-			$_SESSION["result"] = transpositionDecode($encryptedText, $_SESSION["key"]);
+			require_once("../ciphers/railfence.php");
+			$_SESSION["result"] = railfenceDecode($encryptedText, $_SESSION["key"]);
 			header("Location: ../../results.php");
 			break;
 		}

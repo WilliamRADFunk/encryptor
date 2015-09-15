@@ -1,53 +1,44 @@
 <?php 
 	session_start();
 	// Function called from the controller to encrypt a string.
-	function vigenereEncrypt($plaintext)
+	function railfenceEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $_SESSION["key"]);
 	}
 	// Function called from the controller to decode a string.
-	function vigenereDecode($encryptedText)
+	function railfenceDecode($encryptedText)
 	{
 		return decode($encryptedText, $_SESSION["key"]);
 	}
-	// Randomly generates a key unique to the Vigenere Cipher.
+	// Randomly generates a key unique to the Railfence Cipher.
 	function generateKey()
 	{
-		$dictionary = fopen( "../../assets/TemporaryDictionaryFiltered.txt", "r") or die("Unable to open file!" );
-		$key = "";
-		$count = 0;
-		$word = rand(1, 50086);
-
-		while( !feof($dictionary) && $count < $word )
-		{
-			$count++;
-			$key = fgets($dictionary);
-		}
-		
-		fclose($dictionary);
-
-		return trim($key);
+		return rand(3, 5);
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
 		$cleanText = clean($plaintext);
-		$vKeyLength = getTextLength($cleanText);
-		$vKey = getVKey( $key, $vKeyLength );
+		$textLength = getTextLength($cleanText);
+		$paddedText - padText($cleanText, $key, $textLength);
+		$numOfRows = $textLength / $key;
 
 		$counter = 0;
 		for( $i = 0; $i < strlen($cleanText); $i++ )
 		{
-			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
+			if( ($counter % $key) == 0)
 			{
-				$match = encodeMatch($vKey{$counter++}, $cleanText{$i});
-				$encryptedText .= $match;
-			}
-			else
-			{
-				$encryptedText .= $cleanText{$i};
+				if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
+				{
+					$encryptedText .= encodeMatch($vKey{$counter++}, $cleanText{$i});
+					$counter++;
+				}
+				else
+				{
+					$encryptedText .= $cleanText{$i};
+				}
 			}
 		}
 		return $encryptedText;
@@ -57,16 +48,13 @@
 	{
 		$decodedText = "";
 		$cleanText = clean($encryptedText);
-		$vKeyLength = getTextLength($cleanText);
-		$vKey = getVKey( $key, $vKeyLength );
 
 		$counter = 0;
 		for( $i = 0; $i < strlen($encryptedText); $i++ )
 		{
 			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
 			{
-				$match = decodeMatch($vKey{$counter++}, $encryptedText{$i});
-				$decodedText .= $match;
+				$decodedText .= decodeMatch($vKey{$counter++}, $encryptedText{$i});
 			}
 			else
 			{
@@ -76,7 +64,7 @@
 
 		return $decodedText;
 	}
-	// Cleans plaintext specific to the vigenere cipher
+	// Cleans plaintext specific to the railfence cipher
 	// Only letters count, upper is changed to lower.
 	function clean($plaintext)
 	{
@@ -96,11 +84,11 @@
 		
 		return $cleanText;
 	}
-	// Finds the number of encodable characters.
+	// Gets length of string where only letters count.
 	function getTextLength($cleanText)
 	{
 		$counter = 0;
-		for( $i = 0; $i < strlen($cleanText); $i++ )
+		for( $i = 0; $i < strlen($cleanText); $i += $key )
 		{
 			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
 			{
@@ -109,24 +97,24 @@
 		}
 		return $counter;
 	}
-	// Converts keyword into a key that matches length of plaintext's
-	// total number of encodable characters.
-	function getVKey( $key, $length )
+	// Adds extraneous characters to the text to make the cipher of
+	// a modable number with the key.
+	function padText($cleanText, $key, $length)
 	{
-		$vKey = "";
-		for( $i = 0; $i < $length; )
+		$paddedText = "";
+		if( (strlen($length) % $key) == 0 )
 		{
-			for( $j = 0; $j < strlen($key); $j++ )
-			{
-				$vKey .= $key{$j};
-				$i++;
-				if( $i >= $length )
-				{
-					break;
-				}
-			}
+			return $cleanText;
 		}
-		return $vKey;
+		else
+		{
+			$paddedText .= $cleanText;
+			for( $i = 0; $i < $key; $i++ )
+			{
+				$paddedText .= "j";
+			}
+			return $paddedText;
+		}
 	}
 	// Finds an encryption match for each encodable character.
 	function encodeMatch($keyChar, $textChar)
