@@ -78,8 +78,8 @@
 		}
 		case "Vigniere":
 		{
-			require_once("../ciphers/vigniere.php");
-			$_SESSION["result"] = vigniereDecode($encryptedText, $_SESSION["key"]);
+			require_once("../ciphers/vigenere.php");
+			$_SESSION["result"] = vigenereDecode($encryptedText, $_SESSION["key"]);
 			header("Location: ../../results.php");
 			break;
 		}

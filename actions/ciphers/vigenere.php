@@ -33,14 +33,15 @@
 	function encode($plaintext, $key)
 	{
 		$encryptedText = "";
-		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
 		$cleanText = clean($plaintext);
-		$cipherTable = tableMaker($key);
+		$table = tableMaker();
+		$vKeyLength = getTextLength($cleanText);
+		$vKey = getVKey( $key, $vKeyLength );
 
-		for( $i = 0; $i < strlen($cleanText) - 1; $i += 2 )
+		$counter = 0;
+		for( $i = 0; $i < strlen($cleanText) && $counter < $vKeyLength; $i++ )
 		{
-			$pair = textPairing($cleanText, $i);
-			$match = encodeMatch($pair, $cipherTable);
+			$match = match($vKey{$counter++}, $cleanText{$i}, $table);
 			$encryptedText .= $match;
 		}
 		return $encryptedText;
@@ -49,13 +50,14 @@
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
-		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
-		$cipherTable = tableMaker($key);
+		$table = tableMaker();
+		$vKeyLength = getTextLength($encryptedText);
+		$vKey = getVKey( $key, $vKeyLength );
 
-		for( $i = 0; $i < strlen($encryptedText) - 1; $i += 2 )
+		$counter = 0;
+		for( $i = 0; $i < strlen($encryptedText) && $counter < $vKeyLength; $i++ )
 		{
-			$pair = textPairing($encryptedText, $i);
-			$match = decodeMatch($pair, $cipherTable);
+			$match = match($vKey{$counter++}, $encryptedText{$i}, $table);
 			$decodedText .= $match;
 		}
 
@@ -70,44 +72,114 @@
 
 		for( $i = 0; $i < strlen($plaintext); $i++ )
 		{
-			if( (ord($plaintext{$i}) == 74) || (ord($plaintext{$i}) == 106) )
-			{
-				$cleanText .= "i";
-				continue;
-			}
-			
 			if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
 			{
 				$plaintext = substr_replace($plaintext, strtolower($plaintext{$i}), $plaintext{$i}, 1);
 			}
 
-			if( (ord($plaintext{$i}) >= 97) && (ord($plaintext{$i}) <= 122) )
-			{
-				$cleanText .= $plaintext{$i};
-			}
-		}
-
-		if( (strlen($cleanText) % 2) != 0 )
-		{
-			$cleanText .= "x";
+			$cleanText .= $plaintext{$i};
 		}
 		
 		return $cleanText;
 	}
 	// Uses alphabet to construct the 26 x 26 letter vigenere table.
-	function tableMaker($key)
+	function tableMaker()
 	{
-		$alphabetTemplate = "abcdefghiklmnopqrstuvwxyz";
-		$cleanKey = stripRepeats($key);
-		$cipherTable = $cleanKey;
-
-		for( $i = 0; $i < strlen($alphabetTemplate); $i++ )
+		$table =[ ["a","b","c","d","e","f","g","h","i","j","k","l","m",
+				 "n","o","p","q","r","s","t","u","v","w","x","y","z"],
+				["b","c","d","e","f","g","h","i","j","k","l","m","n",
+				 "o","p","q","r","s","t","u","v","w","x","y","z","a"],
+				["c","d","e","f","g","h","i","j","k","l","m","n","o",
+				 "p","q","r","s","t","u","v","w","x","y","z","a","b"],
+				["d","e","f","g","h","i","j","k","l","m","n","o","p",
+				 "q","r","s","t","u","v","w","x","y","z","a","b","c"],
+				["e","f","g","h","i","j","k","l","m","n","o","p","q",
+				 "r","s","t","u","v","w","x","y","z","a","b","c","d"],
+				["f","g","h","i","j","k","l","m","n","o","p","q","r",
+				 "s","t","u","v","w","x","y","z","a","b","c","d","e"],
+				["g","h","i","j","k","l","m","n","o","p","q","r","s",
+				 "t","u","v","w","x","y","z","a","b","c","d","e","f"],
+				["h","i","j","k","l","m","n","o","p","q","r","s","t",
+				 "u","v","w","x","y","z","a","b","c","d","e","f","g"],
+				["i","j","k","l","m","n","o","p","q","r","s","t","u",
+				 "v","w","x","y","z","a","b","c","d","e","f","g","h"],
+				["j","k","l","m","n","o","p","q","r","s","t","u","v",
+				 "w","x","y","z","a","b","c","d","e","f","g","h","i"],
+				["k","l","m","n","o","p","q","r","s","t","u","v","w",
+				 "x","y","z","a","b","c","d","e","f","g","h","i","j"],
+				["l","m","n","o","p","q","r","s","t","u","v","w","x",
+				 "y","z","a","b","c","d","e","f","g","h","i","j","k"],
+				["m","n","o","p","q","r","s","t","u","v","w","x","y",
+				 "z","a","b","c","d","e","f","g","h","i","j","k","l"],
+				["n","o","p","q","r","s","t","u","v","w","x","y","z",
+				 "a","b","c","d","e","f","g","h","i","j","k","l","m"],
+				["o","p","q","r","s","t","u","v","w","x","y","z","a",
+				 "b","c","d","e","f","g","h","i","j","k","l","m","n"],
+				["p","q","r","s","t","u","v","w","x","y","z","a","b",
+				 "c","d","e","f","g","h","i","j","k","l","m","n","o"],
+				["q","r","s","t","u","v","w","x","y","z","a","b","c",
+				 "d","e","f","g","h","i","j","k","l","m","n","o","p"],
+				["r","s","t","u","v","w","x","y","z","a","b","c","d",
+				 "e","f","g","h","i","j","k","l","m","n","o","p","q"],
+				["s","t","u","v","w","x","y","z","a","b","c","d","e",
+				 "f","g","h","i","j","k","l","m","n","o","p","q","r"],
+				["t","u","v","w","x","y","z","a","b","c","d","e","f",
+				 "g","h","i","j","k","l","m","n","o","p","q","r","s"],
+				["u","v","w","x","y","z","a","b","c","d","e","f","g",
+				 "h","i","j","k","l","m","n","o","p","q","r","s","t"],
+				["v","w","x","y","z","a","b","c","d","e","f","g","h",
+				 "i","j","k","l","m","n","o","p","q","r","s","t","u"],
+				["w","x","y","z","a","b","c","d","e","f","g","h","i",
+				 "j","k","l","m","n","o","p","q","r","s","t","u","v"],
+				["x","y","z","a","b","c","d","e","f","g","h","i","j",
+				 "k","l","m","n","o","p","q","r","s","t","u","v","w"],
+				["y","z","a","b","c","d","e","f","g","h","i","j","k",
+				 "l","m","n","o","p","q","r","s","t","u","v","w","x"],
+				["z","a","b","c","d","e","f","g","h","i","j","k","l",
+				 "m","n","o","p","q","r","s","t","u","v","w","x","y"] ];
+		return $table;
+	}
+	function getTextLength($cleanText)
+	{
+		$counter = 0;
+		for( $i = 0; $i < strlen($cleanText); $i++ )
 		{
-			if( strpos($cipherTable, $alphabetTemplate{$i}) === false )
+			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
 			{
-				$cipherTable .= $alphabetTemplate{$i};
+				$counter++;
 			}
 		}
-		return trim($cipherTable);
+		return $counter;
 	}
-	?>
+	function getVKey( $key, $length )
+	{
+		$vKey = "";
+		for( $i = 0; $i < strlen($length); $i += strlen($key) )
+		{
+			if( $i >= strlen($length) )
+			{
+				break;
+			}
+			for( $j = 0; $j < strlen($key); $j++ )
+			{
+				$vKey .= $key{$j};
+			}
+		}
+		echo "<br>vKey-length: ", $length, "--- key: ", $key, "<br><br>";
+		return $vKey;
+	}
+	function match($keyChar, $textChar, $table)
+	{
+		if( (ord($textChar) >= 97) && (ord($textChar) <= 122) )
+		{
+			$index1 = (ord($textChar) % 97);
+			$index2 = (ord($keyChar) % 97);
+			echo $index1, "---", $index2, "---'", $keyChar, "'---", $table[$index1][$index2], "<br>";
+			return $table[$index1][$index2];
+		}
+		else
+		{
+			return $textChar;
+		}
+	}
+?>
