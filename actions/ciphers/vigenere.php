@@ -34,15 +34,21 @@
 	{
 		$encryptedText = "";
 		$cleanText = clean($plaintext);
-		$table = tableMaker();
 		$vKeyLength = getTextLength($cleanText);
 		$vKey = getVKey( $key, $vKeyLength );
 
 		$counter = 0;
-		for( $i = 0; $i < strlen($cleanText) && $counter < $vKeyLength; $i++ )
+		for( $i = 0; $i < strlen($cleanText); $i++ )
 		{
-			$match = match($vKey{$counter++}, $cleanText{$i}, $table);
-			$encryptedText .= $match;
+			if( (ord($cleanText{$i}) >= 97) && (ord($cleanText{$i}) <= 122) )
+			{
+				$match = encodeMatch($vKey{$counter++}, $cleanText{$i});
+				$encryptedText .= $match;
+			}
+			else
+			{
+				$encryptedText .= $cleanText{$i};
+			}
 		}
 		return $encryptedText;
 	}
@@ -50,15 +56,22 @@
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
-		$table = tableMaker();
-		$vKeyLength = getTextLength($encryptedText);
+		$cleanText = clean($encryptedText);
+		$vKeyLength = getTextLength($cleanText);
 		$vKey = getVKey( $key, $vKeyLength );
 
 		$counter = 0;
-		for( $i = 0; $i < strlen($encryptedText) && $counter < $vKeyLength; $i++ )
+		for( $i = 0; $i < strlen($encryptedText); $i++ )
 		{
-			$match = match($vKey{$counter++}, $encryptedText{$i}, $table);
-			$decodedText .= $match;
+			if( (ord($encryptedText{$i}) >= 97) && (ord($encryptedText{$i}) <= 122) )
+			{
+				$match = decodeMatch($vKey{$counter++}, $encryptedText{$i});
+				$decodedText .= $match;
+			}
+			else
+			{
+				$decodedText .= $encryptedText{$i};
+			}
 		}
 
 		return $decodedText;
@@ -74,70 +87,15 @@
 		{
 			if( (ord($plaintext{$i}) >= 65) && (ord($plaintext{$i}) <= 90) )
 			{
-				$plaintext = substr_replace($plaintext, strtolower($plaintext{$i}), $plaintext{$i}, 1);
+				$cleanText .= strtolower($plaintext{$i});
 			}
-
-			$cleanText .= $plaintext{$i};
+			else
+			{
+				$cleanText .= $plaintext{$i};
+			}
 		}
 		
 		return $cleanText;
-	}
-	// Uses alphabet to construct the 26 x 26 letter vigenere table.
-	function tableMaker()
-	{
-		$table =[ ["a","b","c","d","e","f","g","h","i","j","k","l","m",
-				 "n","o","p","q","r","s","t","u","v","w","x","y","z"],
-				["b","c","d","e","f","g","h","i","j","k","l","m","n",
-				 "o","p","q","r","s","t","u","v","w","x","y","z","a"],
-				["c","d","e","f","g","h","i","j","k","l","m","n","o",
-				 "p","q","r","s","t","u","v","w","x","y","z","a","b"],
-				["d","e","f","g","h","i","j","k","l","m","n","o","p",
-				 "q","r","s","t","u","v","w","x","y","z","a","b","c"],
-				["e","f","g","h","i","j","k","l","m","n","o","p","q",
-				 "r","s","t","u","v","w","x","y","z","a","b","c","d"],
-				["f","g","h","i","j","k","l","m","n","o","p","q","r",
-				 "s","t","u","v","w","x","y","z","a","b","c","d","e"],
-				["g","h","i","j","k","l","m","n","o","p","q","r","s",
-				 "t","u","v","w","x","y","z","a","b","c","d","e","f"],
-				["h","i","j","k","l","m","n","o","p","q","r","s","t",
-				 "u","v","w","x","y","z","a","b","c","d","e","f","g"],
-				["i","j","k","l","m","n","o","p","q","r","s","t","u",
-				 "v","w","x","y","z","a","b","c","d","e","f","g","h"],
-				["j","k","l","m","n","o","p","q","r","s","t","u","v",
-				 "w","x","y","z","a","b","c","d","e","f","g","h","i"],
-				["k","l","m","n","o","p","q","r","s","t","u","v","w",
-				 "x","y","z","a","b","c","d","e","f","g","h","i","j"],
-				["l","m","n","o","p","q","r","s","t","u","v","w","x",
-				 "y","z","a","b","c","d","e","f","g","h","i","j","k"],
-				["m","n","o","p","q","r","s","t","u","v","w","x","y",
-				 "z","a","b","c","d","e","f","g","h","i","j","k","l"],
-				["n","o","p","q","r","s","t","u","v","w","x","y","z",
-				 "a","b","c","d","e","f","g","h","i","j","k","l","m"],
-				["o","p","q","r","s","t","u","v","w","x","y","z","a",
-				 "b","c","d","e","f","g","h","i","j","k","l","m","n"],
-				["p","q","r","s","t","u","v","w","x","y","z","a","b",
-				 "c","d","e","f","g","h","i","j","k","l","m","n","o"],
-				["q","r","s","t","u","v","w","x","y","z","a","b","c",
-				 "d","e","f","g","h","i","j","k","l","m","n","o","p"],
-				["r","s","t","u","v","w","x","y","z","a","b","c","d",
-				 "e","f","g","h","i","j","k","l","m","n","o","p","q"],
-				["s","t","u","v","w","x","y","z","a","b","c","d","e",
-				 "f","g","h","i","j","k","l","m","n","o","p","q","r"],
-				["t","u","v","w","x","y","z","a","b","c","d","e","f",
-				 "g","h","i","j","k","l","m","n","o","p","q","r","s"],
-				["u","v","w","x","y","z","a","b","c","d","e","f","g",
-				 "h","i","j","k","l","m","n","o","p","q","r","s","t"],
-				["v","w","x","y","z","a","b","c","d","e","f","g","h",
-				 "i","j","k","l","m","n","o","p","q","r","s","t","u"],
-				["w","x","y","z","a","b","c","d","e","f","g","h","i",
-				 "j","k","l","m","n","o","p","q","r","s","t","u","v"],
-				["x","y","z","a","b","c","d","e","f","g","h","i","j",
-				 "k","l","m","n","o","p","q","r","s","t","u","v","w"],
-				["y","z","a","b","c","d","e","f","g","h","i","j","k",
-				 "l","m","n","o","p","q","r","s","t","u","v","w","x"],
-				["z","a","b","c","d","e","f","g","h","i","j","k","l",
-				 "m","n","o","p","q","r","s","t","u","v","w","x","y"] ];
-		return $table;
 	}
 	function getTextLength($cleanText)
 	{
@@ -154,32 +112,34 @@
 	function getVKey( $key, $length )
 	{
 		$vKey = "";
-		for( $i = 0; $i < strlen($length); $i += strlen($key) )
+		for( $i = 0; $i < $length; )
 		{
-			if( $i >= strlen($length) )
-			{
-				break;
-			}
 			for( $j = 0; $j < strlen($key); $j++ )
 			{
 				$vKey .= $key{$j};
+				$i++;
+				if( $i >= $length )
+				{
+					break;
+				}
 			}
 		}
-		echo "<br>vKey-length: ", $length, "--- key: ", $key, "<br><br>";
 		return $vKey;
 	}
-	function match($keyChar, $textChar, $table)
+	function encodeMatch($keyChar, $textChar)
 	{
-		if( (ord($textChar) >= 97) && (ord($textChar) <= 122) )
-		{
 			$index1 = (ord($textChar) % 97);
 			$index2 = (ord($keyChar) % 97);
-			echo $index1, "---", $index2, "---'", $keyChar, "'---", $table[$index1][$index2], "<br>";
-			return $table[$index1][$index2];
-		}
-		else
-		{
-			return $textChar;
-		}
+			return chr( (($index1 + $index2) % 26) + 97 );
+	}
+	function decodeMatch($keyChar, $textChar)
+	{
+			$index1 = (ord($textChar) % 97);
+			$index2 = (ord($keyChar) % 97);
+			if( ($index1 - $index2) < 0)
+			{
+				return chr( (($index1 - $index2) + 26) + 97 );
+			}
+			return chr( (abs($index1 - $index2) % 26) + 97 );
 	}
 ?>
