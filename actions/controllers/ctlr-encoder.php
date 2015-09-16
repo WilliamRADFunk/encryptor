@@ -33,13 +33,6 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "Geometric":
-		{
-			require_once("../ciphers/geometric.php");
-			$_SESSION["result"] = geometricEncrypt($plaintext);
-			header("Location: ../../results.php");
-			break;
-		}
 		case "Hill":
 		{
 			require_once("../ciphers/hill.php");
@@ -54,13 +47,6 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "MD5":
-		{
-			require_once("../ciphers/md5.php");
-			$_SESSION["result"] = md5Encrypt($plaintext);
-			header("Location: ../../results.php");
-			break;
-		}
 		case "Playfair":
 		{
 			require_once("../ciphers/playfair.php");
@@ -72,6 +58,20 @@
 		{
 			require_once("../ciphers/railfence.php");
 			$_SESSION["result"] = railfenceEncrypt($plaintext);
+			header("Location: ../../results.php");
+			break;
+		}
+		case "Route":
+		{
+			require_once("../ciphers/route.php");
+			$_SESSION["result"] = routeEncrypt($plaintext);
+			header("Location: ../../results.php");
+			break;
+		}
+		case "RSA":
+		{
+			require_once("../ciphers/rsa.php");
+			$_SESSION["result"] = rsaEncrypt($plaintext);
 			header("Location: ../../results.php");
 			break;
 		}

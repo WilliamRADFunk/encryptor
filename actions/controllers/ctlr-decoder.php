@@ -34,13 +34,6 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "Geometric":
-		{
-			require_once("../ciphers/geometric.php");
-			$_SESSION["result"] = geometricDecode($encryptedText, $_SESSION["key"]);
-			header("Location: ../../results.php");
-			break;
-		}
 		case "Hill":
 		{
 			require_once("../ciphers/hill.php");
@@ -55,13 +48,6 @@
 			header("Location: ../../results.php");
 			break;
 		}
-		case "MD5":
-		{
-			require_once("../ciphers/md5.php");
-			$_SESSION["result"] = md5Decode($encryptedText, $_SESSION["key"]);
-			header("Location: ../../results.php");
-			break;
-		}
 		case "Playfair":
 		{
 			require_once("../ciphers/playfair.php");
@@ -73,6 +59,20 @@
 		{
 			require_once("../ciphers/railfence.php");
 			$_SESSION["result"] = railfenceDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
+			break;
+		}
+		case "Route":
+		{
+			require_once("../ciphers/route.php");
+			$_SESSION["result"] = routeDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
+			break;
+		}
+		case "RSA":
+		{
+			require_once("../ciphers/rsa.php");
+			$_SESSION["result"] = rsaDecode($encryptedText, $_SESSION["key"]);
 			header("Location: ../../results.php");
 			break;
 		}
