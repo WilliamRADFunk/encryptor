@@ -1,20 +1,20 @@
 <?php 
 	session_start();
 	// Function called from the controller to encrypt a string.
-	function railfenceEncrypt($plaintext)
+	function routeEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $_SESSION["key"]);
 	}
 	// Function called from the controller to decode a string.
-	function railfenceDecode($encryptedText)
+	function routeDecode($encryptedText)
 	{
 		return decode($encryptedText, $_SESSION["key"]);
 	}
-	// Randomly generates a key unique to the Railfence Cipher.
+	// Randomly generates a key unique to the Route Cipher.
 	function generateKey()
 	{
-		return (rand(2, 5));
+		return (rand(3, 5));
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
@@ -22,23 +22,9 @@
 		$encryptedText = "";
 		$cleanText = clean($plaintext);
 		$paddedText = padText($cleanText, $key);
+		$cipherTable = tableMaker($paddedText, $key);
 
-		$counter = 0;
-
-		for( $i = 0; $i < $key; $i++)
-		{
-			$encryptedText .= $paddedText{$i};
-			for( $j = $i + 1; $j < strlen($paddedText); $j++ )
-			{
-				$counter++;
-				if( ($counter % $key) == 0 )
-				{
-					$encryptedText .= $paddedText{$j};
-					$counter = 0;
-				}
-			}
-			$counter = 0;
-		}
+		
 		return $encryptedText;
 	}
 	// Take a chunk of mysterious code and decode it.
@@ -47,18 +33,10 @@
 		$decodedText = "";
 		$cipherTable = tableMaker($encryptedText, $key);
 
-		for( $i = 0; $i < ( strlen($encryptedText) / $key ); $i++ )
-		{
-			for( $j = 0; $j < count($cipherTable); $j++ )
-			{
-				$char = $cipherTable[$j][$i];
-				$decodedText .= $char;
-			}
-		}
-
+		
 		return $decodedText;
 	}
-	// Cleans plaintext specific to the railfence cipher
+	// Cleans plaintext specific to the route cipher
 	// Only letters count, upper is changed to lower.
 	function clean($plaintext)
 	{
@@ -111,7 +89,7 @@
 			return $paddedText;
 		}
 	}
-	// Constructs the rail fence table to make decoding possible.
+	// Constructs the route table to make decoding possible.
 	function tableMaker($encryptedText, $key)
 	{
 		$cipherTable = array();
