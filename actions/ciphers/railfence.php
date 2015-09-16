@@ -45,21 +45,15 @@
 	function decode($encryptedText, $key)
 	{
 		$decodedText = "";
+		$cipherTable = tableMaker($encryptedText, $key);
 
-		$counter = 0;
-
-		for( $i = 0; $i < $key; $i++)
+		for( $i = 0; $i < ( strlen($encryptedText) / $key ); $i++ )
 		{
-			for( $j = $i + 1; $j < strlen($encryptedText); $j++ )
+			for( $j = 0; $j < count($cipherTable); $j++ )
 			{
-				$counter++;
-				if( ($counter % $key) == 0 )
-				{
-					$decodedText .= $encryptedText{$j};
-					$counter = 0;
-				}
+				$char = $cipherTable[$j][$i];
+				$decodedText .= $char;
 			}
-			$counter = 0;
 		}
 
 		return $decodedText;
@@ -97,11 +91,42 @@
 		{
 			$paddedText = $cleanText;
 			$textLength = strlen($cleanText);
-			for( $i = $textLength; $i < ( $textLength + ($textLength % $key) ); $i++ )
+
+			for( $i = 1; $i < ($textLength / $key); $i++)
 			{
-				$paddedText .= "j";
+				for( $j = $i; $j < $textLength; $j += $key )
+				{
+					if( $j == ($textLength - 1) )
+					{
+						continue;
+					}
+					else if( ($j + $key) >= $textLength )
+					{
+						$paddedText = substr( $paddedText, 0, $j ) . "j" . substr( $paddedText, $j+1, strlen($cleanText) - 1 );
+						break;
+					}
+				}
 			}
+
 			return $paddedText;
 		}
+	}
+	// Constructs the rail fence table to make decoding possible.
+	function tableMaker($encryptedText, $key)
+	{
+		$cipherTable = array();
+		$counter = 0;
+
+		for( $i = 0; $i < $key; $i++)
+		{
+			$column = array();
+			for( $j = 0; $j < ( strlen($encryptedText) / $key ); $j++)
+			{
+				array_push($column, $encryptedText{$counter});
+				$counter++;
+			}
+			array_push($cipherTable, $column);
+		}
+		return $cipherTable;
 	}
 ?>
