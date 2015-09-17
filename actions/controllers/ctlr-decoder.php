@@ -27,6 +27,13 @@
 			header("Location: ../../results.php");
 			break;
 		}
+		case "Feistel":
+		{
+			require_once("../ciphers/feistel.php");
+			$_SESSION["result"] = feistelDecode($encryptedText, $_SESSION["key"]);
+			header("Location: ../../results.php");
+			break;
+		}
 		case "Foursquare":
 		{
 			require_once("../ciphers/foursquare.php");
@@ -59,13 +66,6 @@
 		{
 			require_once("../ciphers/railfence.php");
 			$_SESSION["result"] = railfenceDecode($encryptedText, $_SESSION["key"]);
-			header("Location: ../../results.php");
-			break;
-		}
-		case "Route":
-		{
-			require_once("../ciphers/route.php");
-			$_SESSION["result"] = routeDecode($encryptedText, $_SESSION["key"]);
 			header("Location: ../../results.php");
 			break;
 		}
