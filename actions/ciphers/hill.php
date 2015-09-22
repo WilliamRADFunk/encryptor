@@ -1,20 +1,35 @@
 <?php 
 	session_start();
 	// Function called from the controller to encrypt a string.
-	function routeEncrypt($plaintext)
+	function hillEncrypt($plaintext)
 	{
 		$_SESSION["key"] = generateKey();
 		return encode($plaintext, $_SESSION["key"]);
 	}
 	// Function called from the controller to decode a string.
-	function routeDecode($encryptedText)
+	function hillDecode($encryptedText)
 	{
 		return decode($encryptedText, $_SESSION["key"]);
 	}
-	// Randomly generates a key unique to the Route Cipher.
+	// Randomly generates a key unique to the Hill Cipher.
 	function generateKey()
 	{
-		return (rand(3, 5));
+		$key = "";
+		$sizeOfKey = rand(2, 9);
+		for($i = 0; $i < ($sizeOfKey * $sizeOfKey); $i++)
+		{
+			$keyNum = (rand(0, 25) - rand(0, 25));
+			if($i != 0)
+			{
+				$key .= ("," . $keyNum);
+			}
+			else
+			{
+				$key .= $keyNum;
+			}
+		}
+		$key .= ("," . $sizeOfKey);
+		echo $key;
 	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key)
@@ -36,7 +51,7 @@
 		
 		return $decodedText;
 	}
-	// Cleans plaintext specific to the route cipher
+	// Cleans plaintext specific to the hill cipher
 	// Only letters count, upper is changed to lower.
 	function clean($plaintext)
 	{
@@ -89,7 +104,7 @@
 			return $paddedText;
 		}
 	}
-	// Constructs the route table to make decoding possible.
+	// Constructs the hill table to make decoding possible.
 	function tableMaker($encryptedText, $key)
 	{
 		$cipherTable = array();

@@ -24,7 +24,7 @@
 					<option class="encryp-opt" value="Caesar">Caesar Cipher</option>
 					<!--<option class="encryp-opt" value="Feistel">Feistel Cipher</option>-->
 					<option class="encryp-opt" value="Foursquare">Foursquare Cipher</option>
-					<!--<option class="encryp-opt" value="Hill">Hill Cipher</option>-->
+					<option class="encryp-opt" value="Hill">Hill Cipher</option>
 					<option class="encryp-opt" value="Keyword">Keyword Cipher</option>
 					<option class="encryp-opt" value="Playfair">Playfair Cipher</option>
 					<option class="encryp-opt" value="Railfence">Transposition Cipher (Rail-Fence)</option>
