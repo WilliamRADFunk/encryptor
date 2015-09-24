@@ -10,6 +10,7 @@
 	// Function called from the controller to decode a string.
 	function hillDecode($encryptedText)
 	{
+		$key = invertMatrix($_SESSION["key"]);
 		return decode($encryptedText, $_SESSION["key"]);
 	}
 	// Randomly generates a key unique to the Hill Cipher.
@@ -24,30 +25,71 @@
 		echo $key, "</br>";
 		return $key;
 	}
+	function invertMatrix($key)
+	{
+		$invertedMatrix = array();
+		switch($key{0})
+		{
+			case 2:
+			{
+				$determinant = twoBytwo($key);
+				break;
+			}
+			case 3:
+			{
+				$determinant = threeBythree($key);
+				break;
+			}
+			case 4:
+			{
+				$determinant = fourByfour($key);
+				break;
+			}
+			default:
+			{
+				echo "</br>ERROR: Improper key size entered.</br>";
+			}
+		}
+	}
 	// Take a perfectly good string and encodes it.
 	function encode($plaintext, $key, $sizeOfKey)
 	{
 		$encryptedText = "";
 		echo $plaintext, "</br>";
-
 		$cleanText = clean($plaintext);
-		echo "cleanText: </br>", $cleanText, "</br>";
-
+		echo "cleanText: &nbsp&nbsp&nbsp", $cleanText, "</br>";
 		$paddedText = padText($cleanText, $key, $sizeOfKey);
-		echo "paddedText: </br>", $paddedText, "</br>";
+		$paddedTextArray = explode(",", $paddedText);
+		echo "paddedTextArray: ", implode(" ", $paddedTextArray), "</br>";
+		$keyArray = explode(",", $key);
+		array_splice($keyArray, 0, 1);
+		echo "keyArray: </br>", implode(" ", $keyArray), "</br></br>";
 
-		$paddedTextMatrix = explode(",", $paddedText);
-		echo "paddedTextMatrix: </br>", implode(" ", $paddedTextMatrix), "</br>";
-
-		echo "key: </br>", $key, "</br>";
-		$keyMatrix = explode(",", $key);
-		echo "keyMatrix: </br>", implode(" ", $keyMatrix), "</br></br>";
-		array_splice($keyMatrix, 0, 1);
-		echo "keyMatrix: </br>", implode(" ", $keyMatrix), "</br></br>";
-
-		for( $i = 0; $i < count($paddedTextMatrix); $i += $sizeOfKey )
+		$keyMatrix = array();
+		for($i = 0; $i < count($keyArray); $i += $j)
 		{
-			$cipherBlock = encodeBlock( $paddedTextMatrix, $keyMatrix, $sizeOfKey, $i );
+			$row = array();
+			for($j = 0; $j < $sizeOfKey; $j++)
+			{
+				array_push($row, $keyArray[$i + $j]);
+			}
+			array_push($keyMatrix, $row);
+		}
+
+		echo "</br></br>";
+		for($i = 0; $i < count($keyMatrix[0]); $i++)
+		{
+			foreach($keyMatrix[$i][0] as $child)
+			{
+				echo $child . " ";
+			}
+			echo "</br>";
+		}
+		echo "</br></br>";
+
+		for( $k = 0; $k < count($paddedTextArray); $k += $sizeOfKey )
+		{
+			$cipherBlock = encodeBlock( $paddedTextArray, $keyMatrix, $sizeOfKey, $k );
 			$encryptedText .= $cipherBlock;
 		}
 		echo "encryptedText: </br>", $encryptedText, "</br>";
@@ -83,7 +125,6 @@
 		$cleanText .= letterToNum($strippedText{0});
 		for( $j = 1; $j < strlen($strippedText); $j++ )
 		{
-			echo $strippedText{$j}, " ", letterToNum($strippedText{$j}), "</br>";
 			$cleanText .= "," . letterToNum($strippedText{$j});
 		}
 		
@@ -95,9 +136,9 @@
 	{
 		$cleanTextLength = count(explode(",", $cleanText));
 		echo "cleanText length: ", $cleanTextLength, "</br>";
-		$paddedText = "";
 		if( ($cleanTextLength % $sizeOfKey) == 0 )
 		{
+			echo "padLength: 0</br>";
 			return $cleanText;
 		}
 		else
@@ -105,34 +146,33 @@
 			$paddedText = $cleanText;
 			$padLength = $sizeOfKey - ($cleanTextLength % $sizeOfKey);
 			echo "padLength: ", $padLength, "</br>";
-
 			for( $i = $cleanTextLength; $i <= $cleanTextLength + $padLength; $i++)
 			{
 				$paddedText .= "," . (rand(0, 25));
 			}
-
+			echo "paddedText: ", $paddedText, "</br>";
 			return $paddedText;
 		}
 	}
 	// Constructs the hill table to make decoding possible.
-	function encodeBlock($paddedTextMatrix, $keyMatrix, $sizeOfKey, $startIndex)
+	function encodeBlock($paddedTextArray, $keyMatrix, $sizeOfKey, $startIndex)
 	{
 		$toBeEncodedBlock = array();
 		$blockOfEncodedText = "";
-		for($i = $startIndex; ($i < $startIndex + $sizeOfKey) && ($i <= count($paddedTextMatrix)); $i++)
+		for($i = $startIndex; ($i < $startIndex + $sizeOfKey) && ($i <= count($paddedTextArray)); $i++)
 		{
-			echo $i, " = ", $paddedTextMatrix{$i}, "</br>";
-			array_push($toBeEncodedBlock, $paddedTextMatrix[$i]);
+			echo $i, " = ", $paddedTextArray{$i}, "</br>";
+			array_push($toBeEncodedBlock, $paddedTextArray[$i]);
 		}
 		echo "------------------</br>";
-		for($j = 0; $j < count($keyMatrix); )
+		for($j = 0; $j < $sizeOfKey; $j++)
 		{
 			$total = 0;
-			for($k = 0; $k < $sizeOfKey; $j++, $k++)
+			for($k = 0; $k < $sizeOfKey; $k++)
 			{
 				echo "total = ", $total, " + ";
-				$total += $toBeEncodedBlock{$k} * $keyMatrix{$j};
-				echo "(", $toBeEncodedBlock{$k}, "*", $keyMatrix{$j}, ") =", $total, "</br>";
+				$total += $toBeEncodedBlock[$k] * $keyMatrix[$j][$k];
+				echo "(", $toBeEncodedBlock[$k], "*", $keyMatrix[$j][$k], ") = ", $total, "</br>";
 			}
 			if($total >= 0)
 			{
