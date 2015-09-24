@@ -130,11 +130,27 @@
 			$total = 0;
 			for($k = 0; $k < $sizeOfKey; $j++, $k++)
 			{
-				$total += $toBeEncodedBlock{$j} * $keyMatrix{$k};
+				echo "total = ", $total, " + ";
+				$total += $toBeEncodedBlock{$k} * $keyMatrix{$j};
+				echo "(", $toBeEncodedBlock{$k}, "*", $keyMatrix{$j}, ") =", $total, "</br>";
 			}
-			$temp = $total % 26;
-			$temp = ($temp < 0) ? ($temp+26) : $temp;
-			$blockOfEncodedText .= NumToLetter($temp);
+			if($total >= 0)
+			{
+				$temp = $total % 26;
+				$blockOfEncodedText .= NumToLetter($temp);
+				echo "+temp: ", $temp, " ***blockOfEncodedText = ", $blockOfEncodedText, "</br>";
+			}
+			else
+			{
+				$temp2 = $total;
+				while($temp2 < 0)
+				{
+					$temp2 += 26;
+				}
+				$blockOfEncodedText .= NumToLetter($temp2);
+				echo "-temp2: ", $temp2, " ***blockOfEncodedText = ", $blockOfEncodedText, "</br>";
+
+			}			
 		}
 		echo "------------------</br>";
 		echo "------------------</br>";
