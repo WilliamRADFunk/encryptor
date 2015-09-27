@@ -17,12 +17,24 @@
 	function generateKey($sizeOfKey)
 	{
 		$key = $sizeOfKey . "";
-		for($i = 0; $i < ($sizeOfKey * $sizeOfKey); $i++)
+		$notInvertible = true;
+
+		while($notInvertible)
 		{
-			$keyNum = (rand(0, 25) - rand(0, 25));
-			$key .= ("," . $keyNum);
+			for($i = 0; $i < ($sizeOfKey * $sizeOfKey); $i++)
+			{
+				$keyNum = (rand(0, 25) - rand(0, 25));
+				$key .= ("," . $keyNum);
+			}
+			$notInvertible = checkInvertibility($key);
 		}
 		return $key;
+	}
+	function checkInvertibility($key)
+	{
+		$keyMatrix = explode(",", $key);
+		array_splice($keyMatrix, 0, 1);
+		return false;
 	}
 	function invertMatrix($key)
 	{
